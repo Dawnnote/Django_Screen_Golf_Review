@@ -7,11 +7,11 @@
   --text: #2f2c28;
   --link: #ffcc00;
   --button-text: #fff;
-  --button-primary-background: #ffcc00;
-  --button-primary-hover-background: #ffe680;
-  --button-warn-background: #f9592c;
+  --button-primary-background: #AB3323;
+  --button-primary-hover-background: #ec8f83;
+  --button-warn-background: #AB3323;
   --button-secondary-background: #bcb9b0;
-  --ic-button-circle: #ffcc00;
+  --ic-button-circle: #AB3323;
   --input-background: #fff;
   --input-border: #cccac3;
   --input-placeholder: #bcb9b0;
@@ -21,9 +21,9 @@
   --input-error-border: #e6584e;
   --chip-border: #e3e1dc;
   --chip-text: #2f2c28;
-  --chip-green-background: #effaf9;
-  --chip-green-text: #79c9c5;
-  --chip-green-border: #06aea7;
+  --chip-green-background: #fcdbd7;
+  --chip-green-text: #AB3323;
+  --chip-green-border: #AB3323;
   --avatar-placeholder: #e3e1dc;
   --stars: #ffcc00;
   --dialog-border: #e3e1dc;

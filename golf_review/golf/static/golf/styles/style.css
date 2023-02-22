@@ -5,17 +5,17 @@
   --body-background: #fcfcfc;
   --site-header-background: rgba(255, 255, 255, 0.76);
   --navbar: #2f2c28;
-  --site-footer: #bcb9b0;
-  --site-footer-background: #2f2c28;
-  --account-link: #ffcc00;
+  --site-footer: #ffffff;
+  --site-footer-background: #AB3323;
+  --account-link: #AB3323;
   --content-list-contet-date: #bcb9b0;
   --main-header-background: #fff;
   --main-header-height: 565px;
   --main-header-border: #f0efec;
   --main-header: #fff;
-  --content-list-sub-heading: #7b776b;
+  --content-list-sub-heading: #884e46;
   --content-list-pagination-current: #fff;
-  --content-list-pagination-current-bg: #ffcc00;
+  --content-list-pagination-current-bg: #AB3323;
   --review-detail-date: #bcb9b0;
   --review-detail-side-padding: 8px;
   --profile-header-edit: #7b776b;
@@ -266,7 +266,7 @@ ul.navbar li {
 }
 
 .main-header .content > h1 {
-  margin: 220px 10px 437px;
+  margin: 250px 10px 280px;
   text-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
   font-size: 40px;
   letter-spacing: 15.4px;
@@ -277,18 +277,15 @@ ul.navbar li {
   z-index: 1;
 }
 
-.main-header .fg {
+/* .main-header .fg {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 0;
-  background-repeat: no-repeat;
-  background-position: top;
   background-size: 1749px;
-  background-image: url("../assets/main-fg.svg");
-}
+} */
 
 /* review-detail */
 
