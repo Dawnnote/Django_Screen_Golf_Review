@@ -1,0 +1,101 @@
+{% extends "review_base/base_with_navbar.html" %}
+
+{% load widget_tweaks %}
+
+
+{% block title %}
+{% if review %}
+  {{ review.title }}
+{% else %}
+  새 포스트 작성
+{% endif %} | GOLF
+{% endblock title %}
+
+{% block content %}
+<main class="site-body">
+  <form class="review-form max-content-width" method="post" autocomplete="off" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="title">
+      {{ form.title|add_class:"cp-input"|attr:"placeholder:제목"}}
+      {% for error in form.title.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="restaurant-name">
+      {{ form.restaurant_name|add_class:"cp-input"|attr:"placeholder:음식점 이름"}}
+      {% for error in form.restaurant_name.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="restaurant-link">
+      {{ form.restaurant_link|add_class:"cp-input"|attr:"placeholder:네이버 또는 카카오 플레이스 주소"}}
+      {% for error in form.restaurant_link.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="rating">
+      <div class="cp-stars">
+        {% for radio in form.rating %}
+          {{radio}}
+        {% endfor%}
+      </div>
+      {% for error in form.radio.errors %}
+      <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="content">
+      {{ form.content|add_class:"cp-input"|attr:"placeholder:리뷰를 작성해 주세요."}}
+      {% for error in form.title.errors %}
+        <div class="error-message">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="file">
+      <div class="file-content">
+        {% if review.image1 %}
+          <img src="{{ review.image1.url }}"
+        {% endif %}
+        <div>
+          {{ form.image1 }}
+          {% for error in form.image1.errors %}
+            <div class="error-message">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="file">
+      <div class="file-content">
+        {% if review.image2 %}
+          <img src="{{ review.image2.url }}"
+        {% endif %}
+        <div>
+          {{form.image2}}
+          {% for error in form.image2.errors %}
+            <div class="error-message">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="file">
+      <div class="file-content">
+        {% if review.image3 %}
+          <img src="{{ review.image3.url }}"
+        {% endif %}
+        <div>
+          {{form.image3}}
+          {% for error in form.image3.errors %}
+            <div class="error-message">{{ error }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="buttons">
+      <a 
+      class="cp-button secondary cancel" 
+      href="{% if review %}{% url 'review-detail' review.id %}{% else %}{% url 'index' %}{% endif %}">
+      취소
+    </a>
+      <button class="cp-button submit" type="submit">완료</button>
+    </div>
+  </form>
+</main>
+{% endblock content %}
