@@ -12,13 +12,19 @@ class User(AbstractUser):
         error_messages={"unique":"이미 사용중인 닉네임입니다"},
     )
 
+    profile_pic = models.ImageField(
+        default="default_profile_pic.jpg", upload_to="profile_pics"
+    )
+
+    intro = models.CharField(max_length=60, blank=True)
+
     def __str__(self):
         return self.email
 
 class Review(models.Model):
     title = models.CharField(max_length=30)
     restaurant_name = models.CharField(max_length=20)
-    restaurant_link = models.URLField(validators=[validate_restaurant_link])
+    restaurant_link = models.URLField(max_length=500, validators=[validate_restaurant_link])
 
     RATING_CHOICES = [
         (1, "★"),
