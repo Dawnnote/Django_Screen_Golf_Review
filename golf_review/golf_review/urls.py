@@ -26,9 +26,15 @@ urlpatterns = [
     # golf
     path("", include("golf.urls")),
     #allauth
-    path("email-confirmation-done/", 
-    TemplateView.as_view(template_name="golf/email_confirmation_done.html"),
-    name="account_email_confirmation_done"
+    path(
+        "email-confirmation-required/", 
+        TemplateView.as_view(template_name="account/email_confirmation_required.html"),
+        name="account_email_confirmation_required"
+    ),
+    path(
+        "email-confirmation-done/", 
+        TemplateView.as_view(template_name="account/email_confirmation_done.html"),
+        name="account_email_confirmation_done"
     ),
     path('password/change/', 
     CustomPasswordChangeView.as_view(), 

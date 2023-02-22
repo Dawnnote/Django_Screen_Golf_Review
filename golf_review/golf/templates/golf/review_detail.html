@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}{{ review.title }} | Coplate{% endblock title %}
+{% block title %}{{ review.title }} | UJS{% endblock title %}
 
 {% block content %}
 <main class="site-body">
@@ -13,7 +13,8 @@
       </div>
       <h1 class="title">{{ review.title }}</h1>
       <div class="author">
-        <a class="review-author" href="#">
+        <a class="review-author" href="{% url 'profile' review.author.id %}">
+          <div class="cp-avatar" style="background-image: url('{{ review.author.profile_pic.url }}')"></div>
           <span>{{ review.author.nickname }}</span>
         </a>
       </div>
@@ -42,10 +43,12 @@
 
     <div class="footer">
       <a class="back-link" href="{% url 'index' %}">&lt; 목록으로</a>
+      {% if review.author == user %}
       <div class="buttons">
         <a class="cp-button warn" href="{% url 'review-delete' review.id %}">삭제</a>
         <a class="cp-button secondary" href="{% url 'review-update' review.id %}">수정</a>
       </div>
+      {% endif %}
     </div>
   </article>
 </main>
