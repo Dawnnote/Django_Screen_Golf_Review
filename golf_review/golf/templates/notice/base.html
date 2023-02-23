@@ -14,13 +14,13 @@
 <body>
 
     {% block header %}{% endblock header %}
-    <div class="container">
+    <div class="container min-vh-100">
         <div class="col-md-12">
             <img src="{% static 'golf/assets/notice.jpg' %}" class="img-fluid rounded" alt="Header Image">
-          </div>
+        </div>
     {% block content %}{% endblock content %}
-    {% block footer %}{% endblock footer %}
-
+    
   </div>
+  {% block footer %}{% endblock footer %}
 </body>
 </html>
