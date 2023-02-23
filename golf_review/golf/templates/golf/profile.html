@@ -1,0 +1,74 @@
+{% extends "review_base/base_with_navbar.html" %} 
+{% load static %} 
+{% block title %}{{ profile_user.nickname }} | UJS{% endblock title %} {% block content %}
+<main class="site-body">
+  <div class="profile-header">
+    <div class="content max-content-width">
+      <div class="cp-avatar large profile-pic" style="background-image: url('{{ profile_user.profile_pic.url }}')"></div>
+      <div class="info">
+        <h1 class="username">{{ profile_user.nickname }}</h1>
+        {% if profile_user == user %}
+          <a class="edit" href="{% url 'profile-update' %}">
+            <img class="cp-icon small" src="{% static 'golf/icons/ic-pen.svg' %}" alt="Pen Icon">
+            프로필 수정
+          </a>
+          &#183;
+          <a class="edit" href="{% url 'account_change_password' %}">
+            비밀번호 변경
+          </a>
+        {% endif %}
+        {% if profile_user.intro %}
+        <div>
+          <p class="cp-chip intro">{{ profile_user.intro }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="content-list max-content-width">
+    <div class="header">
+      <h2>{{ profile_user.nickname }}님의 최신 리뷰</h2>
+      {% if user_reviews %}
+      <a class="cp-ic-button after circle morereview" href="{% url 'user-review-list' profile_user.id %}">
+        리뷰 전체보기
+      </a>
+      {% endif %}
+    </div>
+
+    <div class="contents">
+      {% for review in user_reviews %}
+      <a href="{% url 'review-detail' review.id %}">
+        <div class="cp-card content">
+          <div
+            class="thumb"
+            style="background-image: url('{{ review.image1.url }}');"
+          ></div>
+          <div class="body">
+            <span class="cp-chip green">{{ review.restaurant_name }}</span>
+            <h2 class="title">{{ review.title }}</h2>
+            <date class="date">{{ review.dt_created|date:"Y년 n월 j일" }}</date>
+            <div class="metadata">
+              <div class="review-rating">
+                <span class="cp-stars">
+                  {% for i in ""|ljust:review.rating %}★{% endfor %}
+                </span>
+              </div>
+              <div class="review-author">
+                <div
+                  class="cp-avatar"
+                  style="background-image: url('{{ review.author.profile_pic.url }}')"
+                ></div>
+                <span>{{ review.author.nickname }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      {% empty %}
+      <p class="empty">아직 리뷰가 없어요 :(</p>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock content %}

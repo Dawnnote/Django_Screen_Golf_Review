@@ -1,0 +1,8 @@
+{% extends "review_base/base_with_header.html" %}
+
+{% block content %}
+<div class="cp-dialog info account-password-dialog">
+  <p>리뷰를 작성하려면 이메일 인증이 필요합니다. {{ user.email }}으로 발송된 이메일을 확인하시고 이메일 인증을 완료해 주세요.</p>
+  <a class="cp-button inverted button" href="{% url 'index' %}">홈으로 이동</a>
+</div>
+{% endblock content %}

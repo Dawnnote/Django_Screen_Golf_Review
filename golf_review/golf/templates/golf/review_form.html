@@ -8,7 +8,7 @@
   {{ review.title }}
 {% else %}
   새 포스트 작성
-{% endif %} | GOLF
+{% endif %} | UJS
 {% endblock title %}
 
 {% block content %}
@@ -22,13 +22,13 @@
       {% endfor %}
     </div>
     <div class="restaurant-name">
-      {{ form.restaurant_name|add_class:"cp-input"|attr:"placeholder:음식점 이름"}}
+      {{ form.restaurant_name|add_class:"cp-input"|attr:"placeholder:골프장 이름"}}
       {% for error in form.restaurant_name.errors %}
         <div class="error-message">{{ error }}</div>
       {% endfor %}
     </div>
     <div class="restaurant-link">
-      {{ form.restaurant_link|add_class:"cp-input"|attr:"placeholder:네이버 또는 카카오 플레이스 주소"}}
+      {{ form.restaurant_link|add_class:"cp-input"|attr:"placeholder:골프장 주소 링크"}}
       {% for error in form.restaurant_link.errors %}
         <div class="error-message">{{ error }}</div>
       {% endfor %}
