@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.views.generic.edit import FormMixin
 from django.views.generic import (
     ListView, DetailView, 
     CreateView, UpdateView,
@@ -8,7 +9,8 @@ from django.views.generic import (
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from allauth.account.models import EmailAddress
 from allauth.account.views import PasswordChangeView
-from .models import Review, User
+from .models import Review, User, Post, Comment
+from .forms import CommentForm
 from .forms import ReviewForm, ProfileForm
 from .functions import confirmation_required_redirect
 
@@ -134,3 +136,57 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     def get_success_url(self):
         return reverse('profile', kwargs={"user_id": self.request.user.id})
 
+
+class GotoScreenGolf(ListView):
+    model = Review
+    template_name = "map/golf_screengolf.html"
+
+class GotoPracticeGolf(ListView):
+    model = Review
+    template_name = "map/golf_practicegolf.html"
+
+
+
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'notice/post_list.html'
+    context_object_name = 'posts'
+    ordering = ['-created_date']
+
+class PostDetailView(FormMixin, DetailView):
+    model = Post
+    template_name = 'notice/post_detail.html'
+    context_object_name = 'post'
+    form_class = CommentForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post=self.object)
+        context['latest_posts'] = Post.objects.order_by('-created_date')[:5]
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+class CommentListView(ListView):
+    model = Comment
+    template_name = 'myapp/all_comments.html'
+    context_object_name = 'comments'
+
+    def get_queryset(self):
+        self.post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return Comment.objects.filter(post=self.post)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.post
+        return context
