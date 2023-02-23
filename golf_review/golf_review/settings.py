@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-sbfe)*nlp1ec92l+e$2@-%25)k0vqi2qh#u7ox9ewdfu%!3e$3"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'dawnnote.pythonanywhere.com',]
+ALLOWED_HOSTS = ['dawnnote.pythonanywhere.com']
 
 
 # Application definition
