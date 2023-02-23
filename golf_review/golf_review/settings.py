@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "django_seed",
 ]
 
 SITE_ID = 1
