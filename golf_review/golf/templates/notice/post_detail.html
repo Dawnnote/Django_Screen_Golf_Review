@@ -1,0 +1,31 @@
+<!-- templates/myapp/post_detail.html -->
+{% extends "notice/base_with_navbar.html" %}
+
+{% block content %}
+  <div class="row">
+
+    <div class="col-md-8">
+      <div class="card post-content">
+        <div class="card-body">
+          
+          <h1 class="card-title">{{ post.title }}</h1>
+          <hr>
+          <img src="{{ post.header_img.url }}" class="card-img-top" alt="...">
+          <p class="card-text">{{ post.content | linebreaksbr }}</p>
+          
+        </div>
+      </div>
+      <hr>
+
+      </form>
+    </div>
+    <div class="col-md-4">
+      <h4>최근 글 목록</h4>
+      {% for post in latest_posts %}
+        <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a><br>
+      {% empty %}
+        <p>No posts yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

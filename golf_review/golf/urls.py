@@ -16,4 +16,12 @@ urlpatterns = [
 
     path("set-profile/", views.ProfileSetView.as_view(), name="profile-set"),
     path("edit-profile/", views.ProfileUpdateView.as_view(), name="profile-update"),
+
+
+    path("screen", views.GotoScreenGolf.as_view(), name="go-to-screengolf"),
+    path("practice", views.GotoPracticeGolf.as_view(), name="go-to-practicegolf"),
+
+
+    path('post', views.PostListView.as_view(), name='post_list'),
+    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail')
 ]

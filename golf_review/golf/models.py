@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .validators import validate_no_special_characters, validate_restaurant_link
+from django.utils import timezone
 
 # Create your models here.
 class User(AbstractUser):
@@ -46,3 +47,23 @@ class Review(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    header_img = models.ImageField(upload_to='notice/images/%Y/%m/%d/', blank=True)
+    
+    def __str__(self):
+        return self.title
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.text
