@@ -33,6 +33,13 @@ urlpatterns = [
         name='comment-delete'
     ),
 
+    # like url
+    path(
+        'like/<int:content_type_id>/<int:object_id>',
+        views.ProcessLikeView.as_view(),
+        name='process-like'
+    ),
+
 
     # other page url
     path("screen", views.GotoScreenGolf.as_view(), name="go-to-screengolf"),

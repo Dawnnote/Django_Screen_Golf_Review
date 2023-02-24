@@ -92,7 +92,9 @@ class Like(models.Model):
 
     def __str__(self):
         return f"({self.user}, {self.liked_object})"
-
+    
+    class Meta:
+        unique_together = ['user', 'content_type', 'object_id']
 
 
 
