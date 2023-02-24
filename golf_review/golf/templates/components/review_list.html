@@ -1,0 +1,27 @@
+<div class="contents">
+    {% for review in reviews %}
+      <a href="{% url 'review-detail' review.id %}">
+          <section class="cp-card content">
+            <div class="thumb" style="background-image: url('{{ review.image1.url }}');"></div>
+            <div class="body">
+              <span class="cp-chip green">{{ review.restaurant_name }}</span>
+              <h2 class="title">{{ review.title }}</h2>
+              <date class="date">{{ review.dt_created|date:"Y년 n월 j일" }}</date>
+              <div class="metadata">
+                <div class="review-rating">
+                  <span class="cp-stars">
+                    {% for i in ""|ljust:review.rating %}★{% endfor%}
+                  </span>
+                </div>
+                <div class="review-author">
+                  <div class="cp-avatar" style="background-image: url('{{ review.author.profile_pic.url }}')"></div>
+                  <span>{{ review.author.nickname }}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </a>
+    {% empty %}
+      <p class="empty">{{ empty_message }}(</p>
+    {% endfor %}
+    </div>

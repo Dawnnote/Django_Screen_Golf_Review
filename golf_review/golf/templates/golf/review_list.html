@@ -1,19 +1,17 @@
 {% extends "review_base/base_with_navbar.html" %}
-{% load static %}
 
-{% block title %}{{ profile_user.nickname }}님의 리뷰 | UJS{% endblock title %}
+{% block title %}리뷰 목록 ({{ paginator.count }}) | UJS{% endblock title %}
 
 {% block content %}
 <main class="site-body">
   <div class="content-list max-content-width">
     <div class="header">
-      <h2>{{ profile_user.nickname }}님의 리뷰 ({{ paginator.count }})</h2>
+      <h2>리뷰 목록</h2>
     </div>
-
     <div class="contents">
-      {% for review in user_reviews %}
+      {% for review in reviews %}
         <a href="{% url 'review-detail' review.id %}">
-          <div class="cp-card content">
+          <section class="cp-card content">
             <div class="thumb" style="background-image: url('{{ review.image1.url }}');"></div>
             <div class="body">
               <span class="cp-chip green">{{ review.restaurant_name }}</span>
@@ -25,25 +23,21 @@
                     {% for i in ""|ljust:review.rating %}★{% endfor %}
                   </span>
                 </div>
-                <div class="review-author">
+                <div class="author">
                   <div class="cp-avatar" style="background-image: url('{{ review.author.profile_pic.url }}')"></div>
                   <span>{{ review.author.nickname }}</span>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </a>
       {% empty %}
         <p class="empty">아직 리뷰가 없어요 :(</p>
       {% endfor %}
-    </div>
-
-    <div class="wrap-pagination">    
-      <a class="cp-ic-button circle backbutton" href="{% url 'profile' profile_user.id %}">프로필로 돌아가기</a>
-      {% if is_paginated %}
-        {% include 'components/pagination.html with page_obj=page_obj' %}
-      {% endif %}
-    </div>
+    </div>    
+    {% if is_paginated %}
+      {% include 'components/pagination.html with page_obj=page_obj' %}
+    {% endif %}
   </div>
 </main>
 {% endblock content %}
