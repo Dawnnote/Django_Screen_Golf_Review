@@ -1,0 +1,14 @@
+{% extends "review_base/base_with_navbar.html" %}
+
+{% block title %}댓글 삭제 | UJS{% endblock title %}
+
+{% block content %}
+<main class="site-body">
+  <form class="cp-dialog confirm-delete" method="post">
+    {% csrf_token %}
+    <span class="content">정말 댓글을 삭제하시겠습니까?</span>
+    <button class="cp-button warn" type="submit">삭제</button>
+    <a class="cp-button secondary" href="{% url 'review-detail' usercomment.review.id %}">취소</a>
+  </form>
+</main>
+{% endblock content %}

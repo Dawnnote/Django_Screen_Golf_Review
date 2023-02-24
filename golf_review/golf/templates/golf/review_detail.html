@@ -76,9 +76,9 @@
               </a>
               {% if user == comment.author %}
                 <div class="buttons">
-                  <a href="#">삭제</a>
+                  <a href="{% url 'comment-delete' comment.id %}">삭제</a>
                   <span> | </span>
-                  <a href="#">수정</a>
+                  <a href="{% url 'comment-update' comment.id %}">수정</a>
                 </div>
               {% endif %}
             </div>

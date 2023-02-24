@@ -14,7 +14,6 @@ from .models import Review, User, Post, Comment, UserComment
 from .forms import ReviewForm, ProfileForm, CommentForm, UserCommentForm
 
 
-# Create your views here.
 class IndexView(ListView):
     model = Review
     template_name = "golf/index.html"
@@ -78,7 +77,25 @@ class CommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('review-detail', kwargs={'review_id': self.kwargs.get('review_id')})
+    
 
+class CommentUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
+    model = UserComment
+    form_class = UserCommentForm
+    template_name = 'golf/comment_update_form.html'
+    pk_url_kwarg = 'comment_id'
+
+    def get_success_url(self):
+        return reverse('review-detail', kwargs={'review_id': self.object.review.id})
+
+
+class CommentDeleteView(LoginAndOwnershipRequiredMixin, DeleteView):
+    model = UserComment
+    template_name = 'golf/comment_confirm_delete.html'
+    pk_url_kwarg = 'comment_id'
+
+    def get_success_url(self):
+        return reverse('review-detail', kwargs={'review_id': self.object.review.id})
 
 
 class ProfileView(DetailView):

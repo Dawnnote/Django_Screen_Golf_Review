@@ -1,0 +1,18 @@
+{% extends "review_base/base_with_navbar.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}댓글 수정 | UJS{% endblock title %}
+
+{% block content %}
+<main class="site-body">
+  <form class="comment-update-form" method="post">
+    {% csrf_token %}
+    {{ form.content|attr:"placeholder:댓글 내용을 입력해주세요."|add_class:"cp-input" }}
+    <div class="buttons">
+      <button class="cp-button small" type="submit">완료</button>
+      <a class="cp-button small secondary" href="{% url 'review-detail' usercomment.review.id %}">취소</a>
+    </div>
+  </form>
+</main>
+{% endblock content %}
