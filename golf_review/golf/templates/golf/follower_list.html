@@ -1,0 +1,45 @@
+{% extends "review_base/base_with_navbar.html" %}
+
+{% load static %}
+
+{% block title %}팔로워 목록 | UJS{% endblock title %}
+
+{% block content %}
+<main class="site-body">
+  <div class="follow-list">
+    <div class="follow-list-header">
+      <h2>팔로워 ({{ paginator.count }})</h2>
+      <a class="back-link" href="{% url 'profile' profile_user_id %}">프로필로 돌아가기</a>
+    </div>
+    {% if followers %}
+      <div class="follow-list-block">
+        {% for u in followers %}
+          <a class="follow-list-row" href="{% url 'profile' u.id %}">
+            <div class="cp-avatar medium" style="background-image: url('{{ u.profile_pic.url }}')"></div>
+            <span class="nickname">{{ u.nickname }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if is_paginated %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li><a href="?page=1">처음</a></li>
+          <li><a href="?page={{ page_obj.previous_page_number }}">이전</a></li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+              <li class="current">{{ num }}</li>
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li><a href="?page={{ num }}">{{ num }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li><a href="?page={{ page_obj.next_page_number }}">다음</a></li>
+          <li><a href="?page={{ page_obj.paginator.num_pages }}">마지막</a></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+  </div>
+</main>
+{% endblock content %}
