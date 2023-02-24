@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 
 from .validators import validate_no_special_characters, validate_restaurant_link
 from django.utils import timezone
@@ -55,6 +55,8 @@ class Review(models.Model):
 
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
 
+    likes = GenericRelation('Like')
+
     def __str__(self):
         return self.title
     
@@ -70,6 +72,8 @@ class UserComment(models.Model):
 
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='comments')
+
+    likes = GenericRelation('Like')
 
     def __str__(self):
         return self.content[:30]
