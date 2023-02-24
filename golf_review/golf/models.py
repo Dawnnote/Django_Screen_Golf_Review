@@ -52,6 +52,11 @@ class Review(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        ordering = ['-dt_created']
+
+
 
 class UserComment(models.Model):
     content = models.TextField(max_length=500, blank=False)
