@@ -52,7 +52,7 @@
           <span> 댓글 {{ review.comment.count }}</span>
         </div>
       </div>
-      <form class="comment-create-form" action="#" method="post">
+      <form class="comment-create-form" action="{% url 'comment-create' review.id %}" method="post">
         {% csrf_token %}
         {% if user.is_authenticated %}
           {{ form.content|attr:"placeholder:댓글 내용을 입력해주세요."|add_class:"cp-input" }}
