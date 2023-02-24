@@ -1,6 +1,7 @@
 {% extends "review_base/base_with_navbar.html" %}
 
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}{{ review.title }} | UJS{% endblock title %}
 
@@ -43,14 +44,26 @@
     <div class="like-comment-block">
       <div class="like-comment-header">
         <button class="like-button">
-          <img width="21px" src="{% static 'coplate/icons/ic-heart.svg' %}" alt="like icon">
+          <img width="21px" src="{% static 'golf/icons/ic-heart.svg' %}" alt="like icon">
           <span> 좋아요 {{ review.likes.count }}</span>
         </button>
         <div class="comment-info">
-          <img src="{% static 'coplate/icons/ic-comment.svg' %}" alt="comment icon">
+          <img src="{% static 'golf/icons/ic-comment.svg' %}" alt="comment icon">
           <span> 댓글 {{ review.comment.count }}</span>
         </div>
       </div>
+      <form class="comment-create-form" action="#" method="post">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+          {{ form.content|attr:"placeholder:댓글 내용을 입력해주세요."|add_class:"cp-input" }}
+          <button class="cp-button small" type="submit">등록</button>
+        {% else %}
+        <a href="{% url 'account_login' %}?next={% url 'review-detail' review.id %}">
+          {{ form.content|attr:"placeholder:댓글을 작성하려면 로그인이 필요합니다."|add_class:"cp-input"|attr:"disabled"}}
+        </a>
+          <button class="cp-button small secondary" type="submit" disabled>등록</button>
+        {% endif %}
+      </form>
       <div class="comment-list">
         {% for comment in review.comments.all %}
           <div class="comment">
@@ -77,7 +90,7 @@
                 {{ comment.dt_created|date:"Y년 n월 j일" }}
               </div>
               <button class="like-button">
-                <img width="16px" src="{% static 'coplate/icons/ic-heart.svg' %}" alt="like icon">
+                <img width="16px" src="{% static 'golf/icons/ic-heart.svg' %}" alt="like icon">
                 <span> 좋아요 {{ comment.likes.count }}</span>
               </button>
             </div>

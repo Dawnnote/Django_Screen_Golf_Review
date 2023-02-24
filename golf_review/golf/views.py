@@ -10,8 +10,7 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from allauth.account.models import EmailAddress
 from allauth.account.views import PasswordChangeView
 from .models import Review, User, Post, Comment
-from .forms import CommentForm
-from .forms import ReviewForm, ProfileForm
+from .forms import ReviewForm, ProfileForm, CommentForm, UserCommentForm
 from .functions import confirmation_required_redirect
 
 
@@ -27,6 +26,11 @@ class ReviewDetailView(DetailView):
     model = Review
     template_name = "golf/review_detail.html"
     pk_url_kwarg = "review_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = UserCommentForm()
+        return context
 
 
 class ReviewCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
