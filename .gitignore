@@ -1,2 +1,3 @@
 golf_review/golf/__pycache__/
 golf_review/golf/migrations/
+golf_review/golf/__pycache__/*.pyc
