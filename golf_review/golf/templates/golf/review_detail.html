@@ -40,16 +40,57 @@
         <span>위치보기</span>
       </a>
     </div>
-
-    <div class="footer">
-      <a class="back-link" href="{% url 'index' %}">&lt; 목록으로</a>
+    <div class="like-comment-block">
+      <div class="like-comment-header">
+        <button class="like-button">
+          <img width="21px" src="{% static 'coplate/icons/ic-heart.svg' %}" alt="like icon">
+          <span> 좋아요 {{ review.likes.count }}</span>
+        </button>
+        <div class="comment-info">
+          <img src="{% static 'coplate/icons/ic-comment.svg' %}" alt="comment icon">
+          <span> 댓글 {{ review.comment.count }}</span>
+        </div>
+      </div>
+      <div class="comment-list">
+        {% for comment in review.comments.all %}
+          <div class="comment">
+            <div class="comment-header">
+              <a href="{% url 'profile' comment.author.id %}">
+                <div class="author">
+                  <div class="cp-avatar" style="background-image: url('{{ comment.author.profile_pic.url }}')"></div>
+                  <span>{{ comment.author.nickname }}</span>
+                </div>
+              </a>
+              {% if user == comment.author %}
+                <div class="buttons">
+                  <a href="#">삭제</a>
+                  <span> | </span>
+                  <a href="#">수정</a>
+                </div>
+              {% endif %}
+            </div>
+            <div class="comment-content">
+              {{ comment.content|linebreaksbr }}
+            </div>
+            <div class="comment-footer">
+              <div class="comment-date">
+                {{ comment.dt_created|date:"Y년 n월 j일" }}
+              </div>
+              <button class="like-button">
+                <img width="16px" src="{% static 'coplate/icons/ic-heart.svg' %}" alt="like icon">
+                <span> 좋아요 {{ comment.likes.count }}</span>
+              </button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
       {% if review.author == user %}
       <div class="buttons">
         <a class="cp-button warn" href="{% url 'review-delete' review.id %}">삭제</a>
         <a class="cp-button secondary" href="{% url 'review-update' review.id %}">수정</a>
       </div>
       {% endif %}
-    </div>
   </article>
 </main>
 {% endblock content %}
