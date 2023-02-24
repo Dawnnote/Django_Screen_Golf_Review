@@ -35,16 +35,24 @@ urlpatterns = [
 
     # like url
     path(
-        'like/<int:content_type_id>/<int:object_id>',
+        'like/<int:content_type_id>/<int:object_id>/',
         views.ProcessLikeView.as_view(),
         name='process-like'
     ),
 
+    # follow url
+    path(
+        'users/<int:user_id>/follow/',
+        views.ProcessFollowView.as_view(),
+        name='process-follow'
+    ),
+
+
 
     # other page url
-    path("screen", views.GotoScreenGolf.as_view(), name="go-to-screengolf"),
-    path("practice", views.GotoPracticeGolf.as_view(), name="go-to-practicegolf"),
+    path("screen/", views.GotoScreenGolf.as_view(), name="go-to-screengolf"),
+    path("practice/", views.GotoPracticeGolf.as_view(), name="go-to-practicegolf"),
 
-    path('post', views.PostListView.as_view(), name='post_list'),
+    path('post/', views.PostListView.as_view(), name='post_list'),
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail')
 ]
