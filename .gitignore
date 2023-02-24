@@ -1,3 +1,2 @@
-golf_review/golf/__pycache__/*.pyc
-golf_review/*.sqlite3
-golf_review/golf/migrations/*.py
+golf_review/golf/__pycache__/
+golf_review/golf/migrations/
