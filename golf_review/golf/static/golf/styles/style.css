@@ -5,22 +5,27 @@
   --body-background: #fcfcfc;
   --site-header-background: rgba(255, 255, 255, 0.76);
   --navbar: #2f2c28;
-  --site-footer: #ffffff;
-  --site-footer-background: #AB3323;
-  --account-link: #AB3323;
+  --site-footer: #bcb9b0;
+  --site-footer-background: #2f2c28;
+  --account-link: #ffcc00;
   --content-list-contet-date: #bcb9b0;
   --main-header-background: #fff;
   --main-header-height: 565px;
   --main-header-border: #f0efec;
   --main-header: #fff;
-  --content-list-sub-heading: #884e46;
+  --content-list-sub-heading: #7b776b;
   --content-list-pagination-current: #fff;
-  --content-list-pagination-current-bg: #AB3323;
+  --content-list-pagination-current-bg: #ffcc00;
   --review-detail-date: #bcb9b0;
   --review-detail-side-padding: 8px;
   --profile-header-edit: #7b776b;
   --file-content-border: #cccac3;
   --file-content-background: #fff;
+  --like-comment-block: #f4f4f4;
+  --comment-border: #dfdfdf;
+  --follow-list-block: #f6f5f3;
+  --back-link: #e1811b;
+  --search-input-background: #f3f2ef;
 }
 
 /* site */
@@ -122,7 +127,7 @@ ul.navbar li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 25px 10px 25px 25px;
+  margin: 25px 15px 25px 25px;
 }
 
 .content-list .header h2 {
@@ -199,7 +204,7 @@ ul.navbar li {
   align-items: center;
 }
 
-.content-list .pagination {
+.pagination {
   display: flex;
   justify-content: center;
   margin: 40px 0;
@@ -207,18 +212,18 @@ ul.navbar li {
   list-style: none;
 }
 
-.content-list .pagination li ~ .content-list .pagination li {
+.pagination li ~ .pagination li {
   margin-left: 5px;
 }
 
-.content-list .pagination li {
+.pagination li {
   min-width: 40px;
   height: 40px;
   line-height: 40px;
   text-align: center;
 }
 
-.content-list .pagination li.current {
+.pagination li.current {
   border-radius: 9px;
   background-color: var(--content-list-pagination-current-bg);
   color: var(--content-list-pagination-current);
@@ -242,10 +247,21 @@ ul.navbar li {
   flex-grow: 1;
 }
 
+.content-list .cp-button:not(.search-button) {
+  display: block;
+  width: 450px;
+  margin: 50px auto 0 auto;
+}
+
+.index .content-list .header:not(:first-child) {
+  margin-top: 170px;
+}
+
 /* main-header */
 
 .main-header {
   margin-top: -70px;
+  padding-bottom: 160px;
   border-bottom: 1px solid var(--main-header-border);
   background-color: var(--main-header-background);
   position: relative;
@@ -258,6 +274,7 @@ ul.navbar li {
   align-items: center;
   max-width: 1000px;
   width: 100%;
+  height: 556px;
   margin: 0 auto;
   background-size: contain;
   background-repeat: no-repeat;
@@ -265,27 +282,87 @@ ul.navbar li {
   background-image: url("../assets/main-bg.jpg");
 }
 
-.main-header .content > h1 {
-  margin: 250px 10px 280px;
-  text-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
-  font-size: 40px;
-  letter-spacing: 15.4px;
-  text-align: center;
-  word-break: keep-all;
-  color: var(--main-header);
-  position: relative;
-  z-index: 1;
-}
-
-/* .main-header .fg {
+.main-header .fg {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 0;
+  background-repeat: no-repeat;
+  background-position: top;
   background-size: 1749px;
-} */
+  background-image: url("../assets/main-fg.svg");
+}
+
+.main-header .content > * {
+  z-index: 1;
+}
+
+.main-header .content > h1 {
+  text-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+  font-size: 40px;
+  letter-spacing: 15.4px;
+  text-align: center;
+  word-break: keep-all;
+  color: var(--main-header);
+  margin-bottom: 40px;
+}
+
+.main-header .header-search {
+  padding: 15px 18px 15px 17px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 3px 16px 0 #46433d;
+}
+
+/* search-form */
+
+.search-form {
+  width: 615px;
+  display: flex;
+}
+
+/* search-input */
+
+input.search-input {
+  flex: 1 1;
+  height: 55px;
+  font-size: 19px;
+  letter-spacing: -0.3px;
+  padding: 16px 0 16px 55px;
+  border: none;
+  background-color: var(--search-input-background);
+  outline: none;
+  border-radius: 7px;
+  background-image: url(../icons/ic-search.svg);
+  background-repeat: no-repeat;
+  background-position: 18px 15px;
+}
+
+input.search-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+/* search-button */
+
+.search-form .cp-button {
+  width: 125px;
+  height: 55px;
+  font-size: 21px;
+  font-weight: bold;
+  margin-left: 12px;
+}
+
+/* search-results */
+
+.search-results .search-form {
+  margin-bottom: 45px;
+}
+
+.search-results .content-list .header {
+  margin-left: 0px;
+}
 
 /* review-detail */
 
@@ -310,7 +387,7 @@ ul.navbar li {
   margin-left: var(--review-detail-side-padding);
 }
 
-.review-detail .review-info > .author,
+.review-detail .review-info > .review-author,
 .review-detail .review-info > .review-rating {
   margin-right: var(--review-detail-side-padding);
 }
@@ -329,13 +406,13 @@ ul.navbar li {
   color: var(--review-detail-date);
 }
 
-.review-detail .review-info > .author {
+.review-detail .review-info > .review-author {
   display: flex;
   justify-content: flex-end;
 }
 
 .review-detail .content {
-  margin: 45px 0 80px;
+  margin: 45px 0 35px;
 }
 
 .review-detail .content .thumb {
@@ -372,7 +449,7 @@ ul.navbar li {
 
 .review-detail .footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 28px 0;
   border-top: 1px solid var(--border);
@@ -384,6 +461,133 @@ ul.navbar li {
 
 .review-detail .footer .buttons > :not(:last-child) {
   margin-right: 8px;
+}
+
+/* like-comment-block */
+
+.like-comment-block {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: var(--like-comment-block);
+  padding: 0 25px;
+  margin-bottom: 27px;
+}
+
+/* like-comment-header */
+
+.like-comment-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 0px;
+  border-bottom: 1px solid var(--comment-border);
+}
+
+.like-comment-header > :not(:last-child) {
+  margin-right: 25px;
+}
+
+.like-button {
+  border: none;
+  cursor: pointer;
+  background: none;
+  font-size: 17px;
+  padding: 0;
+}
+
+a.like-button:hover {
+  text-decoration: none;
+}
+
+.comment-info {
+  font-size: 17px;
+}
+
+.like-button, .comment-info {
+  display: flex;
+  align-items: center;
+  white-space: pre;
+}
+
+/* comment */
+
+.comment {
+  padding: 20px 5px 25px 5px;
+  border-top: 1px solid var(--comment-border);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.comment-header .buttons {
+  font-size: 14px;
+}
+
+.comment-content {
+  font-size: 15px;
+  line-height: 1.67;
+  margin-bottom: 6px;
+}
+
+.comment-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-footer .like-button {
+  font-size: 14px;
+}
+
+.comment-date {
+  font-size: 14px;
+  letter-spacing: -0.21px;
+  color: #adadad;
+}
+
+/* comment-form */
+
+.comment-create-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.comment-create-form a {
+  width: 100%;
+}
+
+.comment-create-form textarea.cp-input {
+  height: 120px;
+}
+
+.comment-create-form button.cp-button {
+  margin-left: 25px;
+  flex-shrink: 0;
+}
+
+.comment-update-form {
+  max-width: 840px;
+  margin: 64px auto 19px auto;
+}
+
+.comment-update-form textarea.cp-input {
+  height: 120px;
+}
+
+.comment-update-form .buttons {
+  margin-top: 19px;
+  display: flex;
+  justify-content: end;
+}
+
+.comment-update-form .buttons > :not(:last-child) {
+  margin-right: 15px;
 }
 
 /* review-form */
@@ -428,7 +632,6 @@ ul.navbar li {
 
 .review-form .content textarea {
   height: 526px;
-  resize: none;
 }
 
 .review-form .file-content {
@@ -471,9 +674,9 @@ ul.navbar li {
   margin-left: 9px;
 }
 
-/* review-confirm-delete */
+/* confirm-delete */
 
-.review-confirm-delete {
+.confirm-delete {
   display: flex;
   align-items: center;
   max-width: 740px;
@@ -481,11 +684,11 @@ ul.navbar li {
   margin: 65px auto;
 }
 
-.review-confirm-delete > :not(:last-child) {
+.confirm-delete > :not(:last-child) {
   margin-right: 15px;
 }
 
-.review-confirm-delete .content {
+.confirm-delete .content {
   flex-grow: 1;
 }
 
@@ -505,12 +708,9 @@ ul.navbar li {
   align-items: center;
 }
 
-.profile-header .content > :not(:last-child) {
-  margin-right: 24px;
-}
-
 .profile-header .profile-pic {
   flex-shrink: 0;
+  margin-right: 15px;
 }
 
 .profile-header .info {
@@ -520,7 +720,7 @@ ul.navbar li {
 
 .profile-header .username {
   font-size: 22px;
-  margin: 7px 0;
+  margin: 7px 9px;
 }
 
 .profile-header .edit {
@@ -530,12 +730,79 @@ ul.navbar li {
   margin-bottom: 16px;
 }
 
+.profile-header .edit:first-of-type {
+  margin-left: 9px;
+}
+
 .profile-header .intro {
   margin: 0;
   max-width: 100%;
   overflow: hidden;
+}
+
+.profile-header .follow-section {
+  margin: auto 20px;
   white-space: nowrap;
-  text-overflow: ellipsis;
+}
+
+.profile-header .vert-divider {
+  margin: 0 12px;
+}
+
+.follow-button .cp-button {
+  width: 107px;
+  display: flex;
+  justify-content: center;
+}
+
+/* follow-list */
+
+.follow-list {
+  max-width: 740px;
+  margin: 56px auto 200px auto;
+}
+
+.follow-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 15px;
+  padding: 0 15px;
+}
+
+.follow-list-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.follow-list-header .back-link {
+  font-size: 16px;
+  color: var(--back-link);
+  letter-spacing: -0.32px;
+}
+
+.follow-list-block {
+  background-color: var(--follow-list-block);
+  border-radius: 6px;
+  padding: 25px 30px;
+}
+
+.follow-list-row {
+  display: flex;
+  align-items: center;
+}
+
+.follow-list-row:not(:last-child) {
+  margin-bottom: 12px;
+}
+
+.follow-list-row .cp-avatar {
+  margin-right: 15px;
+}
+
+.follow-list-row .nickname {
+  font-size: 17px;
+  letter-spacing: -0.26px;
 }
 
 /* account */
@@ -707,7 +974,6 @@ ul.navbar li {
 
 .profile-form .content > textarea {
   height: 188px;
-  resize: none;
 }
 
 .profile-form .buttons {
@@ -727,15 +993,15 @@ ul.navbar li {
   margin-right: 9px;
 }
 
-/* review-author */
+/* author */
 
-.review-author {
+.author {
   display: flex;
   align-items: center;
   font-size: 15px;
 }
 
-.review-author > :not(:last-child) {
+.author > :not(:last-child) {
   margin-right: 10px;
 }
 

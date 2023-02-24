@@ -68,6 +68,9 @@ class UserComment(models.Model):
 
     def __str__(self):
         return self.content[:30]
+    
+    class Meta:
+        ordering = ['-dt_created']
 
 
 class Like(models.Model):
@@ -80,6 +83,13 @@ class Like(models.Model):
 
     def __str__(self):
         return f"({self.user}, {self.liked_object})"
+
+
+
+
+
+
+
 
 
 class Post(models.Model):
