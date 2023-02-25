@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 
-from .validators import validate_no_special_characters, validate_restaurant_link
+from .validators import validate_no_special_characters, validate_golf_link
 from django.utils import timezone
 
 # Create your models here.
@@ -34,8 +34,8 @@ class User(AbstractUser):
 
 class Review(models.Model):
     title = models.CharField(max_length=30)
-    restaurant_name = models.CharField(max_length=20)
-    restaurant_link = models.URLField(max_length=500, validators=[validate_restaurant_link])
+    golf_name = models.CharField(max_length=20)
+    golf_link = models.URLField(max_length=500, validators=[validate_golf_link])
 
     RATING_CHOICES = [
         (1, "★"),

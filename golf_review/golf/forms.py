@@ -7,8 +7,8 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = [
             "title",
-            "restaurant_name",
-            "restaurant_link",
+            "golf_name",
+            "golf_link",
             "rating",
             "image1",
             "image2",

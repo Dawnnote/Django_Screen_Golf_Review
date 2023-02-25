@@ -37,7 +37,7 @@ class SearchView(ListView):
         query = self.request.GET.get('query', '')
         return Review.objects.filter(
             Q(title__icontains=query)
-            | Q(restaurant_name__icontains=query)
+            | Q(golf_name__icontains=query)
             | Q(content__icontains=query)
         )
     

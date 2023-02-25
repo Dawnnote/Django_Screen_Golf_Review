@@ -155,10 +155,4 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "account_email_confirmation_
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ""
 
 # Email settings
-
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = "lshoon7454@gmail.com"
-# EMAIL_HOST_PASSWORD = "rjjvclnmhsosvazf"
