@@ -23,7 +23,7 @@ class IndexView(ListView):
     template_name = "golf/index.html"
     context_object_name = "reviews"
     paginate_by = 4
-    
+
 
 class ReviewDetailView(DetailView):
     model = Review

@@ -1,0 +1,17 @@
+{% extends "review_base/base_with_navbar.html" %}
+
+{% block title %}팔로잉 유저들의 리뷰 ({{ paginator.count }}) | UJS{% endblock title %}
+
+{% block content %}
+<main class="site-body">
+  <div class="content-list max-content-width">
+    <div class="header">
+      <h2>팔로잉 유저들의 리뷰 ({{ paginator.count }})</h2>
+    </div>
+    {% include 'components/review_list.html' with reviews=following_reviews empty_message="아직 리뷰가 없어요 :(" %}
+    {% if is_paginated %}
+      {% include 'components/pagination.html' with page_obj=page_obj %}
+    {% endif %}
+  </div>
+</main>
+{% endblock content %}
