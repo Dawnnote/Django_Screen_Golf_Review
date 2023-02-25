@@ -10,6 +10,8 @@ from django.views.generic import (
     DeleteView,
     )
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
+
 from braces.views import LoginRequiredMixin
 from allauth.account.views import PasswordChangeView
 
@@ -23,6 +25,27 @@ class IndexView(ListView):
     template_name = "golf/index.html"
     context_object_name = "reviews"
     paginate_by = 4
+
+
+class SearchView(ListView):
+    model = Review
+    context_object_name = 'search_results'
+    template_name = 'golf/search_results.html'
+    paginate_by = 8
+
+    def get_queryset(self):
+        query = self.request.GET.get('query', '')
+        return Review.objects.filter(
+            Q(title__icontains=query)
+            | Q(restaurant_name__icontains=query)
+            | Q(content__icontains=query)
+        )
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('query', '')
+        return context
+
 
 
 class ReviewDetailView(DetailView):

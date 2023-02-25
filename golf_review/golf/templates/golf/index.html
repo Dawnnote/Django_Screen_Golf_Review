@@ -3,9 +3,15 @@
 {% block content %}
 <main class="site-body">
   <div class="main-header">
-    <div class="content">
-      <div class="fg"></div>
-      <h1>오늘은 어디서 칠까?</h1>
+    <div class="fg"></div>
+      <div class="content">
+          <h1>오늘은 어디서 칠까?</h1>
+          <div class="header-search">
+          <form class="search-form" action="{% url 'search' %}" method="get">
+            <input class="search-input" name="query" type="text" placeholder="골프장을 검색해보세요" required>
+            <button class="cp-button search-button" type="submit">검색</button>
+          </form>
+        </div>
     </div>
   </div>
 

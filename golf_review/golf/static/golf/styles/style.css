@@ -263,6 +263,7 @@ ul.navbar li {
   align-items: center;
   max-width: 1000px;
   width: 100%;
+  height: 556px;
   margin: 0 auto;
   background-size: contain;
   background-repeat: no-repeat;
@@ -270,8 +271,11 @@ ul.navbar li {
   background-image: url("../assets/main-bg.jpg");
 }
 
+.main-header .content > * {
+  z-index: 1;
+}
+
 .main-header .content > h1 {
-  margin: 250px 10px 280px;
   text-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
   font-size: 40px;
   letter-spacing: 15.4px;
@@ -282,15 +286,14 @@ ul.navbar li {
   z-index: 1;
 }
 
-/* .main-header .fg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-  background-size: 1749px;
-} */
+.main-header .header-search {
+  padding: 15px 18px 15px 17px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 3px 16px 0 #46433d;
+}
+
+
 
 
 /* search-form */
