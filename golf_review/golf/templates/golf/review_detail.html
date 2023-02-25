@@ -1,6 +1,7 @@
 {% extends "review_base/base_with_navbar.html" %}
 
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}{{ review.title }} | UJS{% endblock title %}
 
@@ -40,16 +41,97 @@
         <span>위치보기</span>
       </a>
     </div>
-
-    <div class="footer">
-      <a class="back-link" href="{% url 'index' %}">&lt; 목록으로</a>
+    <div class="like-comment-block">
+      <div class="like-comment-header">
+        {% if user.is_authenticated %}
+        <form action="{% url 'process-like' review_ctype_id review.id %}" method="post">
+          {% csrf_token %}
+          <button class="like-button" type="submit">
+            {% if likes_review %}
+              <img width="21px" src="{% static 'golf/icons/ic-heart-orange.svg' %}" alt="filled like icon">
+            {% else %}
+              <img width="21px" src="{% static 'golf/icons/ic-heart.svg' %}" alt="like icon">
+            {% endif %}
+            <span> 좋아요 {{ review.likes.count }}</span>
+          </button>
+        </form>
+        {% else %}
+        <a class="like-button" href="{% url 'account_login' %}?next={% url 'review-detail' review.id %}" >
+          <img width="21px" src="{% static 'golf/icons/ic-heart.svg' %}" alt="like icon">
+          <span> 좋아요 {{ review.likes.count }}</span>
+        </a>
+        {% endif %}
+        <div class="comment-info">
+          <img src="{% static 'golf/icons/ic-comment.svg' %}" alt="comment icon">
+          <span> 댓글 {{ review.comment.count }}</span>
+        </div>
+      </div>
+      <form class="comment-create-form" action="{% url 'comment-create' review.id %}" method="post">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+          {{ form.content|attr:"placeholder:댓글 내용을 입력해주세요."|add_class:"cp-input" }}
+          <button class="cp-button small" type="submit">등록</button>
+        {% else %}
+        <a href="{% url 'account_login' %}?next={% url 'review-detail' review.id %}">
+          {{ form.content|attr:"placeholder:댓글을 작성하려면 로그인이 필요합니다."|add_class:"cp-input"|attr:"disabled"}}
+        </a>
+          <button class="cp-button small secondary" type="submit" disabled>등록</button>
+        {% endif %}
+      </form>
+      <div class="comment-list">
+        {% for comment in review.comments.all %}
+          <div class="comment">
+            <div class="comment-header">
+              <a href="{% url 'profile' comment.author.id %}">
+                <div class="author">
+                  <div class="cp-avatar" style="background-image: url('{{ comment.author.profile_pic.url }}')"></div>
+                  <span>{{ comment.author.nickname }}</span>
+                </div>
+              </a>
+              {% if user == comment.author %}
+                <div class="buttons">
+                  <a href="{% url 'comment-delete' comment.id %}">삭제</a>
+                  <span> | </span>
+                  <a href="{% url 'comment-update' comment.id %}">수정</a>
+                </div>
+              {% endif %}
+            </div>
+            <div class="comment-content">
+              {{ comment.content|linebreaksbr }}
+            </div>
+            <div class="comment-footer">
+              <div class="comment-date">
+                {{ comment.dt_created|date:"Y년 n월 j일" }}
+              </div>
+                {% if user.is_authenticated %}
+                <form action="{% url 'process-like' comment_ctype_id comment.id %}" method="post">
+                  {% csrf_token %}
+                    <button class="like-button" type="submit">
+                      {% if comment in liked_comments %}
+                        <img width="21px" src="{% static 'golf/icons/ic-heart-orange.svg' %}" alt="filled like icon">
+                      {% else %}
+                        <img width="21px" src="{% static 'golf/icons/ic-heart.svg' %}" alt="like icon">
+                      {% endif %}
+                      <span> 좋아요 {{ comment.likes.count }}</span>
+                    </button>
+                </form>
+                {% else %}
+                  <a class="like-button" href="{% url 'account_login' %}?next={% url 'review-detail' review.id %}" >
+                    <img width="21px" src="{% static 'golf/icons/ic-heart.svg' %}" alt="like icon">
+                    <span> 좋아요 {{ comment.likes.count }}</span>
+                  </a>
+                {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
       {% if review.author == user %}
       <div class="buttons">
         <a class="cp-button warn" href="{% url 'review-delete' review.id %}">삭제</a>
         <a class="cp-button secondary" href="{% url 'review-update' review.id %}">수정</a>
       </div>
       {% endif %}
-    </div>
   </article>
 </main>
 {% endblock content %}

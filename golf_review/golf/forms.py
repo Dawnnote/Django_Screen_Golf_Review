@@ -1,23 +1,14 @@
 from django import forms
-from .models import User, Review, Comment
+from .models import User, Review, Comment, UserComment
 
-
-# class SignupForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ["nickname"]
-
-#     def signup(self, request, user):
-#         user.nickname = self.cleaned_data['nickname']
-#         user.save()
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = [
             "title",
-            "restaurant_name",
-            "restaurant_link",
+            "golf_name",
+            "golf_link",
             "rating",
             "image1",
             "image2",
@@ -39,6 +30,19 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             "intro": forms.Textarea,
         }
+
+class UserCommentForm(forms.ModelForm):
+    class Meta:
+        model = UserComment
+        fields = [
+            'content',
+        ]
+        widgets = {
+            'content': forms.Textarea,
+        }
+
+
+
 
 
 class CommentForm(forms.ModelForm):

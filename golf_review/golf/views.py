@@ -1,27 +1,51 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic.edit import FormMixin
 from django.views.generic import (
-    ListView, DetailView, 
-    CreateView, UpdateView,
+    View,
+    ListView, 
+    DetailView, 
+    CreateView, 
+    UpdateView,
     DeleteView,
     )
-from braces.views import LoginRequiredMixin, UserPassesTestMixin
-from allauth.account.models import EmailAddress
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
+
+from braces.views import LoginRequiredMixin
 from allauth.account.views import PasswordChangeView
-from .models import Review, User, Post, Comment
-from .forms import CommentForm
-from .forms import ReviewForm, ProfileForm
-from .functions import confirmation_required_redirect
+
+from .mixins import LoginAndVerificationRequiredMixin, LoginAndOwnershipRequiredMixin
+from .models import Review, User, Post, Comment, UserComment, Like
+from .forms import ReviewForm, ProfileForm, CommentForm, UserCommentForm
 
 
-# Create your views here.
 class IndexView(ListView):
     model = Review
     template_name = "golf/index.html"
     context_object_name = "reviews"
     paginate_by = 4
-    ordering = ["-dt_created"]
+
+
+class SearchView(ListView):
+    model = Review
+    context_object_name = 'search_results'
+    template_name = 'golf/search_results.html'
+    paginate_by = 8
+
+    def get_queryset(self):
+        query = self.request.GET.get('query', '')
+        return Review.objects.filter(
+            Q(title__icontains=query)
+            | Q(golf_name__icontains=query)
+            | Q(content__icontains=query)
+        )
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('query', '')
+        return context
+
 
 
 class ReviewDetailView(DetailView):
@@ -29,14 +53,24 @@ class ReviewDetailView(DetailView):
     template_name = "golf/review_detail.html"
     pk_url_kwarg = "review_id"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = UserCommentForm()
+        context['review_ctype_id'] = ContentType.objects.get(model='review').id
+        context['comment_ctype_id'] = ContentType.objects.get(model='usercomment').id
 
-class ReviewCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+        user = self.request.user
+        if user.is_authenticated:
+            review = self.object
+            context['likes_review'] = Like.objects.filter(user=user, review=review).exists()
+            context['liked_comments'] = UserComment.objects.filter(review=review).filter(likes__user=user)
+        return context
+
+
+class ReviewCreateView(LoginAndVerificationRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
     template_name = "golf/review_form.html"
-
-    redirect_unauthenticated_users = True
-    raise_exception = confirmation_required_redirect
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -45,39 +79,74 @@ class ReviewCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def get_success_url(self):
         return reverse("review-detail", kwargs={"review_id":self.object.id})
 
-    def test_func(self, user):
-        return EmailAddress.objects.filter(user=user, verified=True).exists()
 
-
-class ReviewUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class ReviewUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
     model = Review
     form_class = ReviewForm
     template_name = "golf/review_form.html"
     pk_url_kwarg = "review_id"
 
-    raise_exception = True
-
     def get_success_url(self):
         return reverse("review-detail", kwargs={"review_id":self.object.id})
 
-    def test_func(self, user):
-        review = self.get_object()
-        return review.author == user
 
-
-class ReviewDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class ReviewDeleteView(LoginAndOwnershipRequiredMixin, DeleteView):
     model = Review
     template_name = "golf/review_confirm_delete.html"
     pk_url_kwarg = "review_id"
 
-    raise_exception = True
-
     def get_success_url(self):
         return reverse("index")
 
-    def test_func(self, user):
-        review = self.get_object()
-        return review.author == user
+
+class CommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
+    http_method_names = ['post']
+
+    model = UserComment
+    form_class = UserCommentForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.review = Review.objects.get(id=self.kwargs.get('review_id'))
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('review-detail', kwargs={'review_id': self.kwargs.get('review_id')})
+    
+
+class CommentUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
+    model = UserComment
+    form_class = UserCommentForm
+    template_name = 'golf/comment_update_form.html'
+    pk_url_kwarg = 'comment_id'
+
+    def get_success_url(self):
+        return reverse('review-detail', kwargs={'review_id': self.object.review.id})
+
+
+class CommentDeleteView(LoginAndOwnershipRequiredMixin, DeleteView):
+    model = UserComment
+    template_name = 'golf/comment_confirm_delete.html'
+    pk_url_kwarg = 'comment_id'
+
+    def get_success_url(self):
+        return reverse('review-detail', kwargs={'review_id': self.object.review.id})
+
+      
+class ProcessLikeView(LoginAndVerificationRequiredMixin, View):
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        like, created = Like.objects.get_or_create(
+            user= self.request.user,
+            content_type_id = self.kwargs.get('content_type_id'),
+            object_id=self.kwargs.get('object_id'),
+        )
+        if not created:
+            like.delete()
+        
+        return redirect(self.request.META['HTTP_REFERER'])
+
 
 
 class ProfileView(DetailView):
@@ -88,9 +157,58 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user_id = self.kwargs.get("user_id")
-        context["user_reviews"] = Review.objects.filter(author__id=user_id).order_by("-dt_created")[:4]
+        user = self.request.user
+        profile_user_id = self.kwargs.get('user_id')
+        if user.is_authenticated:
+            context['is_following'] = user.following.filter(id=profile_user_id).exists()
+        context["user_reviews"] = Review.objects.filter(author__id=profile_user_id)[:4]
         return context
+    
+
+class ProcessFollowView(LoginAndVerificationRequiredMixin, View):
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        profile_user_id = self.kwargs.get('user_id')
+        if user.following.filter(id=profile_user_id).exists():
+            user.following.remove(profile_user_id)
+        else:
+            user.following.add(profile_user_id)
+        return redirect('profile', user_id=profile_user_id)
+    
+    
+class FollowingListView(ListView):
+    model = User
+    template_name = 'golf/following_list.html'
+    context_object_name = 'following'
+    paginate_by = 10
+
+    def get_queryset(self):
+        profile_user = get_object_or_404(User, pk=self.kwargs.get('user_id'))
+        return profile_user.following.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_user_id'] = self.kwargs.get('user_id')
+        return context
+
+
+class FollowerListView(ListView):
+    model = User
+    template_name = 'golf/follower_list.html'
+    context_object_name = 'followers'
+    paginate_by = 10
+
+    def get_queryset(self):
+        profile_user = get_object_or_404(User, pk=self.kwargs.get('user_id'))
+        return profile_user.followers.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_user_id'] = self.kwargs.get('user_id')
+        return context
+
 
 class UserReviewListView(ListView):
     model = Review
@@ -100,7 +218,7 @@ class UserReviewListView(ListView):
 
     def get_queryset(self):
         user_id = self.kwargs.get("user_id")
-        return Review.objects.filter(author__id=user_id).order_by("dt_created")
+        return Review.objects.filter(author__id=user_id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -137,6 +255,8 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
         return reverse('profile', kwargs={"user_id": self.request.user.id})
 
 
+
+
 class GotoScreenGolf(ListView):
     model = Review
     template_name = "map/golf_screengolf.html"
@@ -144,8 +264,6 @@ class GotoScreenGolf(ListView):
 class GotoPracticeGolf(ListView):
     model = Review
     template_name = "map/golf_practicegolf.html"
-
-
 
 
 class PostListView(ListView):

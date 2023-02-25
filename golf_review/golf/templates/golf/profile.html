@@ -23,6 +23,30 @@
         </div>
         {% endif %}
       </div>
+      <div class="follow-section">
+        <a href="{% url 'follower-list' profile_user.id %}">
+          팔로워 {{ profile_user.followers.count }}
+        </a>
+        <span class="vert-divider">|</span>
+        <a href="{% url 'following-list' profile_user.id %}">
+          팔로잉 {{ profile_user.following.count }}
+        </a>
+      </div>
+      {% if user.is_authenticated and user != profile_user%}
+      <form class="follow-button" action="{% url 'process-follow' profile_user.id %}" method="post">
+        {% csrf_token %}
+        {% if is_following %}
+          <button class="cp-button small secondary" type="submit">
+            언팔로우
+          </button>
+        {% else %}
+          <button class="cp-button small" type="submit">
+            팔로우
+          </button>
+        {% endif %}
+
+      </form>
+      {% endif %}
     </div>
   </div>
 
