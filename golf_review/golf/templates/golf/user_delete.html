@@ -1,0 +1,14 @@
+{% extends "review_base/base_with_navbar.html" %}
+
+{% block title %}회원 탈퇴 | UJS{% endblock title %}
+
+{% block content %}
+<main class="site-body">
+  <form class="cp-dialog review-confirm-delete" method="post">
+    {% csrf_token %}
+    <span class="content">정말 탈퇴 하시겠습니까?</span>
+    <button class="cp-button warn" type="submit">탈퇴</button>
+    <a class="cp-button secondary" href="{% url 'profile' user.id %}">취소</a>
+  </form>
+</main>
+{% endblock content %}

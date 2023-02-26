@@ -358,7 +358,7 @@ input.search-input::placeholder {
   justify-content: space-between;
 }
 
-.review-detail .review-info > .restaurant-name {
+.review-detail .review-info > .golf-name {
   grid-column: span 3;
   margin: 0;
 }
@@ -569,7 +569,7 @@ a.like-button:hover {
 }
 
 .comment-update-form .buttons > :not(:last-child) {
-  margin-right: 15px;
+  margin-right: 9px;
 }
 
 
@@ -590,8 +590,8 @@ a.like-button:hover {
   grid-column: span 2;
 }
 
-.review-form > .restaurant-name,
-.review-form > .restaurant-link {
+.review-form > .golf-name,
+.review-form > .golfs-link {
   grid-column: span 1;
 }
 
