@@ -11,7 +11,7 @@
 
 - 직접 구현한 Main Page
 
-<img src="https://user-images.githubusercontent.com/117843786/221415476-34a5d737-2146-4c8e-afb9-3a2c74cee008.png" width="65%" height="65%"/>
+<img src="https://user-images.githubusercontent.com/117843786/221415476-34a5d737-2146-4c8e-afb9-3a2c74cee008.png" width="70%" height="70%"/>
 
 ## [:pencil2: 프로젝트 결과 사이트 입장하기](http://dawnnote.pythonanywhere.com/)
 
