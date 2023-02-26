@@ -69,7 +69,7 @@
             style="background-image: url('{{ review.image1.url }}');"
           ></div>
           <div class="body">
-            <span class="cp-chip green">{{ review.restaurant_name }}</span>
+            <span class="cp-chip green">{{ review.golf_name }}</span>
             <h2 class="title">{{ review.title }}</h2>
             <date class="date">{{ review.dt_created|date:"Y년 n월 j일" }}</date>
             <div class="metadata">
@@ -81,8 +81,7 @@
               <div class="review-author">
                 <div
                   class="cp-avatar"
-                  style="background-image: url('{{ review.author.profile_pic.url }}')"
-                ></div>
+                  style="background-image: url('{{ review.author.profile_pic.url }}')"></div>
                 <span>{{ review.author.nickname }}</span>
               </div>
             </div>
@@ -90,9 +89,18 @@
         </div>
       </a>
       {% empty %}
-      <p class="empty">아직 리뷰가 없어요 :(</p>
+      <p class="empty">아직 리뷰가 없어요 :|</p>
       {% endfor %}
     </div>
   </div>
 </main>
+{% if user.is_authenticated and user == profile_user %}
+<div align="right" style="padding-right:200px">
+  <p  class="cp-chip intro" >
+    <a href="{% url 'user-delete' profile_user.id %}">
+      회원탈퇴
+    </a>
+  </p>
+</div>
+{% endif %}
 {% endblock content %}

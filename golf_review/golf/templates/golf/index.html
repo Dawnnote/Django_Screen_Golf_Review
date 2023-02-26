@@ -27,7 +27,7 @@
             <section class="cp-card content">
               <div class="thumb" style="background-image: url('{{ review.image1.url }}');"></div>
               <div class="body">
-                <span class="cp-chip green">{{ review.restaurant_name }}</span>
+                <span class="cp-chip green">{{ review.golf_name }}</span>
                 <h2 class="title">{{ review.title }}</h2>
                 <date class="date">{{ review.dt_created|date:"Y년 n월 j일" }}</date>
                 <div class="metadata">
@@ -45,7 +45,7 @@
             </section>
           </a>
       {% empty %}
-        <p class="empty">아직 리뷰가 없어요 :(</p>
+        <p class="empty">아직 리뷰가 없어요 :|</p>
       {% endfor %}
       </div>
 

@@ -9,8 +9,8 @@
 <main class="site-body">
   <article class="review-detail max-content-width">
     <div class="review-info">
-      <div class="restaurant-name">
-        <span class="cp-chip green">{{ review.restaurant_name }}</span>
+      <div class="golf-name">
+        <span class="cp-chip green">{{ review.golf_name }}</span>
       </div>
       <h1 class="title">{{ review.title }}</h1>
       <div class="author">
@@ -36,7 +36,7 @@
         <img class="thumb" src="{{ review.image3.url }}">
       {% endif %}
       <p class="content">{{ review.content|linebreaksbr }}</p>
-      <a class="location" target="_blank" href="{{ review.restaurant_link }}">
+      <a class="location" target="_blank" href="{{ review.golf_link }}">
         <img class="cp-icon" src="{% static 'golf/icons/ic-pin.svg' %}" alt="Pin Icon">
         <span>위치보기</span>
       </a>
@@ -127,7 +127,7 @@
       </div>
     </div>
       {% if review.author == user %}
-      <div class="buttons">
+      <div class="buttons" align="right">
         <a class="cp-button warn" href="{% url 'review-delete' review.id %}">삭제</a>
         <a class="cp-button secondary" href="{% url 'review-update' review.id %}">수정</a>
       </div>

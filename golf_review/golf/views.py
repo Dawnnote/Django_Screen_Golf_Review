@@ -47,6 +47,14 @@ class SearchView(ListView):
         return context
 
 
+class UserDeleteView(DeleteView):
+    model = User
+    template_name = "golf/user_delete.html"
+    pk_url_kwarg = "user_id"
+
+    def get_success_url(self):
+        return reverse("index")
+
 
 class ReviewDetailView(DetailView):
     model = Review

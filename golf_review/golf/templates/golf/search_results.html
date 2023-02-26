@@ -12,7 +12,7 @@
     <div class="header">
       <h2>"{{ query }}"에 대한 겸색 결과 ({{ paginator.count }})</h2>
     </div>
-    {% include 'components/review_list.html' with reviews=search_results empty_message="검색 결과가 없어요 :(" %}
+    {% include 'components/review_list.html' with reviews=search_results empty_message="검색 결과가 없어요 :" %}
     {% if is_paginated %}
       {% include 'components/pagination.html' with page_obj=page_obj %}
     {% endif %}
