@@ -7,15 +7,15 @@
 - Python
 - Django
 
-#### front-end 기술을 활용하여 소품 마켓 사이트를 구현하는 프로젝트입니다.
+#### Django frame work 기술을 활용하여 골프 리뷰(커뮤니티) 사이트를 구현하는 프로젝트입니다.
 
 - 직접 구현한 Main Page
 
-![image](https://i.esdrop.com/d/t/4bYRi8QOSu/BvZ3f8UGDp.jpg)
+<img src="https://user-images.githubusercontent.com/117843786/221415476-34a5d737-2146-4c8e-afb9-3a2c74cee008.png" width="65%" height="65%"/>
 
 ## [:pencil2: 프로젝트 결과 사이트 입장하기](http://dawnnote.pythonanywhere.com/)
 
-## :pencil: Mini Project (2023/02/09 ~ 2023/02/10) :date:
+## :pencil: Mini Project (2023/02/22 ~ 2023/02/27) :date:
 
 ###  팀명: UJS
 
@@ -53,30 +53,3 @@
 
 ## Main Page
 
-[main page code page](https://github.com/HyoJoon-Yang/web_site/tree/main/main)
-
-### Main Page 시연 영상
-
-![main_page](https://user-images.githubusercontent.com/84713532/218036004-f677d35a-29c7-49f4-8a7b-0268146328e8.gif)
-
-## Navigation Bar
-
-[navigation bar code page](https://github.com/HyoJoon-Yang/web_site/tree/main/navigation%20bar)
-
-### Navigation Bar 시연 영상
-
-![navigation_bar](https://user-images.githubusercontent.com/84713532/218036392-d882375f-1ebb-483b-8057-df71b9e737bb.gif)
-
-## Side bar
-
-[side bar code page](https://github.com/HyoJoon-Yang/web_site/tree/main/sidebar)
-
-### Side bar 시연 영상
-
-![side_bar](https://user-images.githubusercontent.com/84713532/218036630-8baab5f7-a9c0-4905-9b5a-05ac885201a9.gif)
-
-## Detail Page
-
-[detail page code page](https://github.com/HyoJoon-Yang/web_site/tree/main/detail)
-
-### Detail Page 시연 영상
