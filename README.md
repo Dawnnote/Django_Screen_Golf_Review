@@ -45,11 +45,238 @@
 ---
 
 ## :stars: 더 구현하고 싶은 기능
-
+- 소셜 로그인 기능 추가
+- 스토어 만들기
 
 ---
 
 ## Code 및 시연 영상
 
-## Main Page
+## User Model 정의
 
+```python
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    nickname = models.CharField(
+        max_length=15,
+        unique=True,
+        null=True,
+        validators = [validate_no_special_characters],
+        error_messages={"unique":"이미 사용중인 닉네임입니다"},
+    )
+
+    profile_pic = models.ImageField(
+        default="default_profile_pic.jpg", upload_to="profile_pics"
+    )
+
+    intro = models.CharField(max_length=60, blank=True)
+    following = models.ManyToManyField(
+        'self',
+        symmetrical=False,
+        blank=True,
+        related_name='followers'
+    )
+
+    def __str__(self):
+        return self.email
+```
+---
+## 회원 가입
+```python
+# settings.py
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+```
+> `email` 로 로그인 설정 `(default는 username)`
+
+```python
+# project app 안에 있는 urls.py
+path("", include('allauth.urls'))
+```
+> allauth url을 지정
+
+```python
+# settings.py
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+```
+> 이메일 인증은 console창으로 받게 설정
+
+- allauth url 은 다음과 같이 이동할 수 있다 
+    - `/login/`로그인, `/logout/`로그아웃, `/signup/`회원가입
+    
+    
+#### 회원가입 HTML
+
+```html
+<div class="account-background">
+  <main class="account">
+    <div class="title">
+      <a href="{% url 'index' %}">
+        <img class="logo" src="{% static 'golf/assets/golf-logo.svg' %}" alt="Coplate Logo">
+      </a>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <div>
+        {{ form.email|add_class:"cp-input"|attr:"placeholder:이메일"|add_error_class:"error" }}
+        {% for error in form.email.errors %}
+        <div class="error-message">{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% comment %} <div>
+        {{ form.nickname|add_class:"cp-input"|attr:"placeholder:닉네임"|add_error_class:"error"}}
+        {% for error in form.nickname.errors %}
+        <div class="error-message">{{ error }}</div>
+        {% endfor %}
+      </div> {% endcomment %}
+      <div>
+        {{ form.password1|add_class:"cp-input"|attr:"placeholder:비밀번호"|add_error_class:"error"}}
+        {% for error in form.password1.errors %}
+        <div class="error-message">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <div>
+        {{ form.password2|add_class:"cp-input"|attr:"placeholder:비밀번호 확인"|add_error_class:"error"}}
+        {% for error in form.password2.errors %}
+        <div class="error-message">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <button class="cp-button" type="submit">회원가입</button>
+    </form>
+
+    <div class="info">
+      이미 회원이신가요?<a class="link" href="{% url 'account_login' %}">로그인</a>
+    </div>
+  </main>
+</div>
+```
+
+#### 프로필과 닉네임 설정 HTML
+
+```html
+<div class="account-background">
+  <main class="profile-form">
+    <div class="logo">
+      <img class="logo" src="{% static 'golf/assets/golf-logo.svg' %}" alt="Golf Logo">
+    </div>
+    <p class="welcome-message">
+      환영합니다! <strong>프로필</strong>을 작성해주세요
+    </p>
+    <form method="post" enctype="multipart/form-data" autocomplete="off">
+      {% csrf_token %}
+      <div class="profile">
+        <div class="profile-pic cp-avatar large" style="background-image: url('{{ user.profile_pic.url }}')"></div>
+        <div class="file">
+          {{ form.profile_pic }}
+        </div>
+      </div>
+      <div class="nickname">
+        {{ form.nickname|add_class:"cp-input"|add_error_class:"error"|attr:"placeholder:닉네임" }}
+        {% for error in form.nickname.errors %}
+          <div class="error-message">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <div class="content">
+        {{ form.intro|add_class:"cp-input"|add_error_class:"error"|attr:"placeholder:자신을 소개해 주세요!" }}
+        {% for error in form.intro.errors %}
+          <div class="error-message">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <div class="buttons">
+        <button class="cp-button" type="submit">완료</button>
+      </div>
+    </form>
+  </main>
+</div>
+```
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/117843786/221419655-bdb6c5da-994b-47d7-bf5a-6acd6e79786c.png" width="50%" height="50%"/>
+<img src="https://user-images.githubusercontent.com/117843786/221420154-c6697b01-d653-41b2-8eed-e86ac00d412c.png" width="35%" height="35%"/>
+</div>
+
+---
+
+## 로그인
+
+#### HTML 코드
+
+```html
+<div class="account-background">
+  <main class="account">
+    <div class="title">
+      <a href="{% url 'index' %}">
+        <img class="logo" src="{% static 'golf/assets/golf-logo.svg' %}" alt="Golf Logo">
+      </a>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      {% for error in form.non_field_errors  %}
+        <div class="form-error error-message">{{ error }}</div>
+      {% endfor %}
+      
+      <div>
+        {{ form.login|add_class:'cp-input'|attr:"placeholder:이메일"|add_error_class:"error" }}
+        {% for error in form.login.errors  %}
+          <div class="form-error error-message">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <div>
+        {{ form.password|add_class:'cp-input'|attr:"placeholder:비밀번호"|add_error_class:"error" }}
+        {% for error in form.password.errors  %}
+          <div class="form-error error-message">{{ error }}</div>
+        {% endfor %}
+      </div>
+      <button class="cp-button" type="submit">로그인</button>
+    </form>
+    
+    <div class="info">
+      <a class="item" href="{% url 'account_reset_password' %}">비밀번호 찾기</a>
+      <a class="item" href="{% url 'account_signup' %}">회원가입</a>
+    </div>
+  </main>
+</div>
+```
+
+<img src="https://user-images.githubusercontent.com/117843786/221420848-a80c9a13-3afc-40e8-a841-9d9c7aa02e4c.png" width="50%" height="50%"/>
+
+---
+
+## 회원탈퇴
+
+#### urls.py
+```python
+path('delete/<int:user_id>/', views.UserDeleteView.as_view(), name="user-delete")
+```
+
+#### view.py
+```python
+class UserDeleteView(DeleteView):
+    model = User
+    template_name = "golf/user_delete.html"
+    pk_url_kwarg = "user_id"
+
+    def get_success_url(self):
+        return reverse("index")
+```
+
+#### user_delete.html
+```html
+<main class="site-body">
+  <form class="cp-dialog review-confirm-delete" method="post">
+    {% csrf_token %}
+    <span class="content">정말 탈퇴 하시겠습니까?</span>
+    <button class="cp-button warn" type="submit">탈퇴</button>
+    <a class="cp-button secondary" href="{% url 'profile' user.id %}">취소</a>
+  </form>
+</main>
+
+```
+
+<img src="https://user-images.githubusercontent.com/117843786/221421221-d1d2c2c1-9480-4c68-a156-790819ec87ff.png" width="20%" height="20%"/>
+- 유저 프로필 하단 아래 회원탈퇴 버튼이 있다
+
+<img src="https://user-images.githubusercontent.com/117843786/221421198-9dee54f2-0605-429a-b59b-356ceeeb248d.png" width="70%" height="70%"/>
+- 정말 탈퇴할 것인지 물어본다
