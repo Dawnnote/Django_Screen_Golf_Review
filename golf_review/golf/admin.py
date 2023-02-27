@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.contenttypes.admin import GenericStackedInline
 
-from .models import User, Review, Post, UserComment, Like
+from .models import User, Review, Post, UserComment, Like, Category, Board
 
 
 # Register your models here.
@@ -42,3 +42,12 @@ admin.site.register(Post)
 
 admin.site.register(UserComment, CommentAdmin)
 admin.site.register(Like)
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+@admin.register(Board)
+class BoardAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category','video', 'created_at', 'updated_at')
