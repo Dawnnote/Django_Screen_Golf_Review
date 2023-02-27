@@ -10,8 +10,7 @@
 #### Django frame work 기술을 활용하여 골프 리뷰(커뮤니티) 사이트를 구현하는 프로젝트입니다.
 
 - 직접 구현한 Main Page
-
-<img src="https://user-images.githubusercontent.com/117843786/221415476-34a5d737-2146-4c8e-afb9-3a2c74cee008.png" width="70%" height="70%"/>
+<img src="https://user-images.githubusercontent.com/117843786/221477886-332584d4-e64d-40a3-af13-afc3f80f2954.png" width="70%" height="70%"/>
 
 ## [:pencil2: 프로젝트 결과 사이트 입장하기](http://dawnnote.pythonanywhere.com/)
 
