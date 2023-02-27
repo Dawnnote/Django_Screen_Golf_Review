@@ -705,5 +705,89 @@ def validate_golf_link(value):
     # if "place.naver.com" not in value and "place.map.kakao.com" not in value:
     #     raise ValidationError("place.naver.com 또는 place.map.kakao.com이 들어가야 합니다.")
 ```
+---
+
+## 좋아요
+- urls.py
+```python
+    path(
+        'like/<int:content_type_id>/<int:object_id>/',
+        views.ProcessLikeView.as_view(),
+        name='process-like'
+    )
+```
+
+- views.py
+```python
+class ProcessLikeView(LoginAndVerificationRequiredMixin, View):
+    http_method_names = ['post']
+    def post(self, request, *args, **kwargs):
+        like, created = Like.objects.get_or_create(
+            user= self.request.user,
+            content_type_id = self.kwargs.get('content_type_id'),
+            object_id=self.kwargs.get('object_id'),
+        )
+        if not created:
+            like.delete()
+        return redirect(self.request.META['HTTP_REFERER'])
+```
+
+![댓글좋아요](https://user-images.githubusercontent.com/117843786/221473598-e0b9f27e-2417-4183-a281-cd98acfc648a.gif)
+
+<br/>
+<br/>
+
+---
 
 
+# 팔로잉, 팔로워
+- urls.py
+```python
+path(
+        'users/<int:user_id>/follow/',
+        views.ProcessFollowView.as_view(),
+        name='process-follow'
+    ),
+    
+path('users/<int:user_id>/following/', views.FollowingListView.as_view(), name='following-list'),
+
+path('users/<int:user_id>/followers/', views.FollowerListView.as_view(), name='follower-list'),
+```
+
+- views.py (팔로잉 리스트)
+```python
+class FollowingListView(ListView):
+    model = User
+    template_name = 'golf/following_list.html'
+    context_object_name = 'following'
+    paginate_by = 10
+  
+    def get_queryset(self):
+        profile_user = get_object_or_404(User, pk=self.kwargs.get('user_id'))
+        return profile_user.following.all()
+  
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_user_id'] = self.kwargs.get('user_id')
+        return context
+```
+
+- views.py (팔로워 리스트)
+```python
+class FollowerListView(ListView):
+    model = User
+    template_name = 'golf/follower_list.html'
+    context_object_name = 'followers'
+    paginate_by = 10
+  
+    def get_queryset(self):
+        profile_user = get_object_or_404(User, pk=self.kwargs.get('user_id'))
+        return profile_user.followers.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_user_id'] = self.kwargs.get('user_id')
+        return context
+```
+
+![팔로워](https://user-images.githubusercontent.com/117843786/221473737-bb772fe9-4021-42ee-bb15-62a3b68a8d92.gif)
