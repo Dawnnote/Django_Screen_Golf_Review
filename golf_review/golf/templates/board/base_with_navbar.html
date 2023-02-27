@@ -1,0 +1,39 @@
+{% extends "board/base.html" %}
+
+{% load static %}
+
+{% block header %}
+<header class="site-header navbar">
+  <div class="content max-width">
+    <a href="{% url 'index' %}">
+      <img class="logo" src="{% static 'golf/assets/golf-logo.svg' %}" alt="Coplate Logo">
+    </a>
+    <nav>
+      <ul class="navbar">
+        <li><a href="{% url 'go-to-screengolf' %}">스크린골프</a></li>
+        <li><a href="{% url 'go-to-practicegolf' %}">골프연습장</a></li>
+        <li><a href="{% url 'account_logout' %}">골프정보</a></li>
+        <li><a href="{% url 'post_list' %}">공지사항</a></li>
+        <li><a href="{% url 'account_logout' %}">스토어</a></li>
+
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'profile' user.id %}">내정보</a></li>
+          <li><a href="{% url 'account_logout' %}">로그아웃</a></li>
+        {% else %}
+          <li><a href="{% url 'account_login' %}">로그인</a></li>
+          <li><a href="{% url 'account_signup' %}">회원가입</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</header>
+{% endblock header %}
+
+{% block footer %}
+<footer class="site-footer">
+  <div class="max-content-width content">
+    <div>인공지능 부트캠프 25기 Mini Project</div>
+    <div><i>U JUST SWING</i></div>
+  </div>
+</footer>
+{% endblock footer %}
