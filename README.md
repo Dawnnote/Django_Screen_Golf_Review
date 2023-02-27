@@ -82,7 +82,7 @@ class User(AbstractUser):
         return self.email
 ```
 ---
-## 회원 가입
+## 회원가입
 ```python
 # settings.py
 ACCOUNT_AUTHENTICATION_METHOD = "email"
@@ -105,7 +105,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     - `/login/`로그인, `/logout/`로그아웃, `/signup/`회원가입
     
     
-#### 회원가입 HTML
+#### signup.html
 
 ```html
 <div class="account-background">
@@ -152,7 +152,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 </div>
 ```
 
-#### 프로필과 닉네임 설정 HTML
+#### profile_set_form.html
 
 ```html
 <div class="account-background">
@@ -200,7 +200,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ## 로그인
 
-#### HTML 코드
+#### login.html
 
 ```html
 <div class="account-background">
