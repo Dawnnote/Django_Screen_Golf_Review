@@ -326,7 +326,7 @@ class UserDeleteView(DeleteView):
 </div>
 {% endif %}
 ```
-- 로그인 한 유저와 자신의 프로필에서만 회원탈퇴를 보이기 하였다
+- 로그인 유저 자신의 프로필에서만 회원탈퇴 버튼이 보인다 
 
 ```python
 {% if user.is_authenticated %}
