@@ -517,37 +517,6 @@ https://user-images.githubusercontent.com/117843786/221489056-1bd09b67-89dd-4d59
 <br/>
 
 #### 게시글 수정
-```html
-{% block content %}
-<main class="profile-form">
-  <form method="post" enctype="multipart/form-data" autocomplete="off">
-    {% csrf_token %}
-    <div class="profile">
-      <div class="profile-pic cp-avatar large" style="background-image: url('{{ user.profile_pic.url }}')"></div>
-      <div class="file">
-        {{ form.profile_pic }}
-      </div>
-    </div>
-    <div class="nickname">
-      {{ form.nickname|add_class:"cp-input"|add_error_class:"error"|attr:"placeholder:닉네임" }}
-      {% for error in form.nickname.errors %}
-        <div class="error-message">{{ error }}</div>
-      {% endfor %}
-    </div>
-    <div class="content">
-      {{ form.intro|add_class:"cp-input"|add_error_class:"error"|attr:"placeholder:자신을 소개해 주세요!" }}
-      {% for error in form.intro.errors %}
-        <div class="error-message">{{ error }}</div>
-      {% endfor %}
-    </div>
-    <div class="buttons">
-      <a class="cp-button secondary cancel" href="{% url 'profile' user.id %}">취소</a>
-      <button class="cp-button" type="submit">완료</button>
-    </div>
-  </form>
-</main>
-{% endblock content %}
-```
 
 ![리뷰수정](https://user-images.githubusercontent.com/117843786/221471804-2a321d1c-ad0e-4b20-a79f-8e4c2777dd49.gif)
 <br/>
