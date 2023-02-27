@@ -1,0 +1,41 @@
+
+{% extends "board/base_with_navbar.html" %}
+{% load embed_video_tags %}
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="{% url 'board_list' %}">전체게시물</a>
+          </li>
+          {% for category in categories %}
+            <li class="list-group-item">
+              <a href="{% url 'board_list_by_category' category.slug %}">{{ category.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-10">
+        <div class="d-flex justify-content-center">
+          <table class="table">
+
+            <tbody>
+              {% for board in boards %}
+                <tr>
+                  <td><a href="{% url 'board_detail' board.pk %}">{{ board.title }}</a></td>
+                  <td>                  {% video board.video as youtube %}
+
+                    <div><iframe class="rounded-md w-full h-full" src="{{youtube.url}}"
+                      
+                    frameborder="3" allowfullscreen></iframe></div>
+                    {% endvideo %}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
