@@ -17,7 +17,7 @@
 
 ## :pencil: Mini Project (2023/02/22 ~ 2023/02/27) :date:
 
-###  팀명: UJS
+### 팀명: UJS
 
 #### > :family: 팀원
 
@@ -27,7 +27,6 @@
 - [고석주](https://github.com/SeokJuGo)
 - [지우근](https://github.com/UGeunJi)
 - [강동엽](https://github.com/kdy1493)
-
 
 ### 시연 영상
 
@@ -41,10 +40,10 @@
 
 ## :dart: Trouble Shooting
 
-
 ---
 
 ## :stars: 더 구현하고 싶은 기능
+
 - 소셜 로그인 기능 추가
 - 스토어 만들기
 
@@ -81,30 +80,35 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 ```
+
 ---
+
 ## 회원가입
+
 ```python
 # settings.py
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ```
+
 > `email` 로 로그인 설정 `(default는 username)`
 
 ```python
 # project app 안에 있는 urls.py
 path("", include('allauth.urls'))
 ```
+
 > allauth url을 지정
 
 ```python
 # settings.py
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ```
+
 > 이메일 인증은 console창으로 받게 설정
 
-- allauth url 은 다음과 같이 이동할 수 있다 
-    - `/login/`로그인, `/logout/`로그아웃, `/signup/`회원가입
-    
-    
+- allauth url 은 다음과 같이 이동할 수 있다
+  - `/login/`로그인, `/logout/`로그아웃, `/signup/`회원가입
+
 #### signup.html
 
 ```html
@@ -112,33 +116,42 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
   <main class="account">
     <div class="title">
       <a href="{% url 'index' %}">
-        <img class="logo" src="{% static 'golf/assets/golf-logo.svg' %}" alt="Coplate Logo">
+        <img
+          class="logo"
+          src="{% static 'golf/assets/golf-logo.svg' %}"
+          alt="Coplate Logo"
+        />
       </a>
     </div>
 
     <form method="post">
       {% csrf_token %}
       <div>
-        {{ form.email|add_class:"cp-input"|attr:"placeholder:이메일"|add_error_class:"error" }}
-        {% for error in form.email.errors %}
+        {{
+        form.email|add_class:"cp-input"|attr:"placeholder:이메일"|add_error_class:"error"
+        }} {% for error in form.email.errors %}
         <div class="error-message">{{ error }}</div>
         {% endfor %}
       </div>
-      {% comment %} <div>
-        {{ form.nickname|add_class:"cp-input"|attr:"placeholder:닉네임"|add_error_class:"error"}}
+      {% comment %}
+      <div>
+        {{
+        form.nickname|add_class:"cp-input"|attr:"placeholder:닉네임"|add_error_class:"error"}}
         {% for error in form.nickname.errors %}
         <div class="error-message">{{ error }}</div>
         {% endfor %}
-      </div> {% endcomment %}
+      </div>
+      {% endcomment %}
       <div>
-        {{ form.password1|add_class:"cp-input"|attr:"placeholder:비밀번호"|add_error_class:"error"}}
+        {{
+        form.password1|add_class:"cp-input"|attr:"placeholder:비밀번호"|add_error_class:"error"}}
         {% for error in form.password1.errors %}
         <div class="error-message">{{ error }}</div>
         {% endfor %}
       </div>
       <div>
-        {{ form.password2|add_class:"cp-input"|attr:"placeholder:비밀번호 확인"|add_error_class:"error"}}
-        {% for error in form.password2.errors %}
+        {{ form.password2|add_class:"cp-input"|attr:"placeholder:비밀번호
+        확인"|add_error_class:"error"}} {% for error in form.password2.errors %}
         <div class="error-message">{{ error }}</div>
         {% endfor %}
       </div>
@@ -146,7 +159,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     </form>
 
     <div class="info">
-      이미 회원이신가요?<a class="link" href="{% url 'account_login' %}">로그인</a>
+      이미 회원이신가요?<a class="link" href="{% url 'account_login' %}"
+        >로그인</a
+      >
     </div>
   </main>
 </div>
@@ -158,7 +173,11 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 <div class="account-background">
   <main class="profile-form">
     <div class="logo">
-      <img class="logo" src="{% static 'golf/assets/golf-logo.svg' %}" alt="Golf Logo">
+      <img
+        class="logo"
+        src="{% static 'golf/assets/golf-logo.svg' %}"
+        alt="Golf Logo"
+      />
     </div>
     <p class="welcome-message">
       환영합니다! <strong>프로필</strong>을 작성해주세요
@@ -166,21 +185,24 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     <form method="post" enctype="multipart/form-data" autocomplete="off">
       {% csrf_token %}
       <div class="profile">
-        <div class="profile-pic cp-avatar large" style="background-image: url('{{ user.profile_pic.url }}')"></div>
-        <div class="file">
-          {{ form.profile_pic }}
-        </div>
+        <div
+          class="profile-pic cp-avatar large"
+          style="background-image: url('{{ user.profile_pic.url }}')"
+        ></div>
+        <div class="file">{{ form.profile_pic }}</div>
       </div>
       <div class="nickname">
-        {{ form.nickname|add_class:"cp-input"|add_error_class:"error"|attr:"placeholder:닉네임" }}
-        {% for error in form.nickname.errors %}
-          <div class="error-message">{{ error }}</div>
+        {{
+        form.nickname|add_class:"cp-input"|add_error_class:"error"|attr:"placeholder:닉네임"
+        }} {% for error in form.nickname.errors %}
+        <div class="error-message">{{ error }}</div>
         {% endfor %}
       </div>
       <div class="content">
-        {{ form.intro|add_class:"cp-input"|add_error_class:"error"|attr:"placeholder:자신을 소개해 주세요!" }}
-        {% for error in form.intro.errors %}
-          <div class="error-message">{{ error }}</div>
+        {{
+        form.intro|add_class:"cp-input"|add_error_class:"error"|attr:"placeholder:자신을
+        소개해 주세요!" }} {% for error in form.intro.errors %}
+        <div class="error-message">{{ error }}</div>
         {% endfor %}
       </div>
       <div class="buttons">
@@ -207,33 +229,40 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
   <main class="account">
     <div class="title">
       <a href="{% url 'index' %}">
-        <img class="logo" src="{% static 'golf/assets/golf-logo.svg' %}" alt="Golf Logo">
+        <img
+          class="logo"
+          src="{% static 'golf/assets/golf-logo.svg' %}"
+          alt="Golf Logo"
+        />
       </a>
     </div>
 
     <form method="post">
-      {% csrf_token %}
-      {% for error in form.non_field_errors  %}
-        <div class="form-error error-message">{{ error }}</div>
+      {% csrf_token %} {% for error in form.non_field_errors %}
+      <div class="form-error error-message">{{ error }}</div>
       {% endfor %}
-      
+
       <div>
-        {{ form.login|add_class:'cp-input'|attr:"placeholder:이메일"|add_error_class:"error" }}
-        {% for error in form.login.errors  %}
-          <div class="form-error error-message">{{ error }}</div>
+        {{
+        form.login|add_class:'cp-input'|attr:"placeholder:이메일"|add_error_class:"error"
+        }} {% for error in form.login.errors %}
+        <div class="form-error error-message">{{ error }}</div>
         {% endfor %}
       </div>
       <div>
-        {{ form.password|add_class:'cp-input'|attr:"placeholder:비밀번호"|add_error_class:"error" }}
-        {% for error in form.password.errors  %}
-          <div class="form-error error-message">{{ error }}</div>
+        {{
+        form.password|add_class:'cp-input'|attr:"placeholder:비밀번호"|add_error_class:"error"
+        }} {% for error in form.password.errors %}
+        <div class="form-error error-message">{{ error }}</div>
         {% endfor %}
       </div>
       <button class="cp-button" type="submit">로그인</button>
     </form>
-    
+
     <div class="info">
-      <a class="item" href="{% url 'account_reset_password' %}">비밀번호 찾기</a>
+      <a class="item" href="{% url 'account_reset_password' %}"
+        >비밀번호 찾기</a
+      >
       <a class="item" href="{% url 'account_signup' %}">회원가입</a>
     </div>
   </main>
@@ -247,11 +276,13 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ## 회원탈퇴
 
 #### urls.py
+
 ```python
 path('delete/<int:user_id>/', views.UserDeleteView.as_view(), name="user-delete")
 ```
 
 #### view.py
+
 ```python
 class UserDeleteView(DeleteView):
     model = User
@@ -263,6 +294,7 @@ class UserDeleteView(DeleteView):
 ```
 
 #### user_delete.html
+
 ```html
 <main class="site-body">
   <form class="cp-dialog review-confirm-delete" method="post">
@@ -272,7 +304,6 @@ class UserDeleteView(DeleteView):
     <a class="cp-button secondary" href="{% url 'profile' user.id %}">취소</a>
   </form>
 </main>
-
 ```
 
 <img src="https://user-images.githubusercontent.com/117843786/221421221-d1d2c2c1-9480-4c68-a156-790819ec87ff.png" width="20%" height="20%"/>
