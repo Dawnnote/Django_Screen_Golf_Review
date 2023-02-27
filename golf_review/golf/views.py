@@ -16,7 +16,7 @@ from braces.views import LoginRequiredMixin
 from allauth.account.views import PasswordChangeView
 
 from .mixins import LoginAndVerificationRequiredMixin, LoginAndOwnershipRequiredMixin
-from .models import Review, User, Post, Comment, UserComment, Like
+from .models import Review, User, Post, Comment, UserComment, Like,  Category, Board
 from .forms import ReviewForm, ProfileForm, CommentForm, UserCommentForm
 
 
@@ -316,3 +316,21 @@ class CommentListView(ListView):
         context = super().get_context_data(**kwargs)
         context['post'] = self.post
         return context
+    
+class BoardListView(ListView):
+    model = Board
+    context_object_name = 'boards'
+    template_name = 'board/board_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        category_slug = self.kwargs.get('category_slug')
+        if category_slug:
+            context['boards'] = context['boards'].filter(category__slug=category_slug)
+        return context
+
+class BoardDetailView(DetailView):
+    model = Board
+    context_object_name = 'board'
+    template_name = 'board/board_detail.html'
