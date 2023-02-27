@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'golf/styles/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'golf/styles/theme.css' %}">
+  <link rel="shortcut icon" type="image/png" href="{% static 'golf/favicon/favicon.ico' %}">
+  <title>{% block title %}Golf{% endblock title %}</title>
+</head>
+<body>
+
+    {% block header %}{% endblock header %}
+    <div class="container min-vh-200">
+        <div class="col-md-12">
+            <img src="{% static 'golf/assets/notice3.jpg' %}" class="img-fluid rounded" alt="Header Image">
+        </div>
+    {% block content %}{% endblock content %}
+    
+  </div>
+  {% block footer %}{% endblock footer %}
+</body>
+</html>
