@@ -63,6 +63,8 @@
 
 - [좋아요](#좋아요)
 
+- [테스트](https://github.com/Dawnnote/Django_Screen_Golf_Review#%EC%A3%BC%EB%B3%80-%EC%8A%A4%ED%81%AC%EB%A6%B0-%EA%B3%A8%ED%94%84%EC%9E%A5-%EC%97%B0%EC%8A%B5%EC%9E%A5-%EC%9E%90%EB%8F%99%EA%B2%80%EC%83%89)
+
 ## User Model 정의
 
 ```python
