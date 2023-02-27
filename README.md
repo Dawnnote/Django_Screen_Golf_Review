@@ -1106,6 +1106,19 @@ function removeAllChildNods(el) {
 {% endblock content %}
 
 ```
+### views.py
+```python
+
+class GotoScreenGolf(ListView):
+    model = Review
+    template_name = "map/golf_screengolf.html"
+
+class GotoPracticeGolf(ListView):
+    model = Review
+    template_name = "map/golf_practicegolf.html"
+
+```
+
 
 # 공지사항
 
@@ -1130,6 +1143,61 @@ function removeAllChildNods(el) {
   </div>
 </main>
 {% endblock %}
+
+```
+### models.py
+```python
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    header_img = models.ImageField(upload_to='notice/images/%Y/%m/%d/', blank=True)
+    
+    def __str__(self):
+        return self.title
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.text
+
+```
+### views.py
+```python
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'notice/post_list.html'
+    context_object_name = 'posts'
+    ordering = ['-created_date']
+
+class PostDetailView(FormMixin, DetailView):
+    model = Post
+    template_name = 'notice/post_detail.html'
+    context_object_name = 'post'
+    form_class = CommentForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post=self.object)
+        context['latest_posts'] = Post.objects.order_by('-created_date')[:5]
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 ```
 ```python
@@ -1168,4 +1236,118 @@ function removeAllChildNods(el) {
 
 ```
 
+# 골프 정보
+> 카테고리 별 정렬
+![tag](https://user-images.githubusercontent.com/116260619/221490297-c9ef1f04-ca41-4c86-a3e3-72d82b501652.gif)
+> 유튜브 영상 리스트 & 디테일
+![youtube](https://user-images.githubusercontent.com/116260619/221490302-8fc5f9e8-865c-49a1-9ccf-96cab9dc63bd.gif)
 
+#### models.py
+```python
+## Board
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, allow_unicode=True)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name, allow_unicode=True)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
+
+class Board(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    video = EmbedVideoField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.title
+```
+
+### views.py
+```python
+class BoardListView(ListView):
+    model = Board
+    context_object_name = 'boards'
+    template_name = 'board/board_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        category_slug = self.kwargs.get('category_slug')
+        if category_slug:
+            context['boards'] = context['boards'].filter(category__slug=category_slug)
+        return context
+
+class BoardDetailView(DetailView):
+    model = Board
+    context_object_name = 'board'
+    template_name = 'board/board_detail.html'
+
+```
+```python
+# board_list.html
+
+{% extends "board/base_with_navbar.html" %}
+{% load embed_video_tags %}
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="{% url 'board_list' %}">전체게시물</a>
+          </li>
+          {% for category in categories %}
+            <li class="list-group-item">
+              <a href="{% url 'board_list_by_category' category.slug %}">{{ category.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-10">
+        <div class="d-flex justify-content-center">
+          <table class="table">
+
+            <tbody>
+              {% for board in boards %}
+                <tr>
+                  <td><a href="{% url 'board_detail' board.pk %}">{{ board.title }}</a></td>
+                  <td>                  {% video board.video as youtube %}
+
+                    <div><iframe class="rounded-md w-full h-full" src="{{youtube.url}}"
+                      
+                    frameborder="3" allowfullscreen></iframe></div>
+                    {% endvideo %}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+```
+```python
+# board_detail.html
+
+{% extends "board/base_with_navbar.html" %}
+
+{% block content %}
+  <div class="container my-5">
+    <h1 class="text-center">{{ board.title }}</h1>
+    <p>{{ board.content }}</p>
+    
+<iframe  src="https://www.youtube.com/watch?v=p04dnvXmYB4" 
+width="1100px" height="800px">
+</iframe>
+        
+  </div>
+{% endblock %}
+```
