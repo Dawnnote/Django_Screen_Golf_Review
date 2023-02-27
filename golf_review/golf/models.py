@@ -2,10 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-
+from django.utils.text import slugify
 from .validators import validate_no_special_characters, validate_golf_link
 from django.utils import timezone
-
+from embed_video.fields import EmbedVideoField
 # Create your models here.
 class User(AbstractUser):
     nickname = models.CharField(
@@ -120,3 +120,28 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.text
+
+
+
+## Board
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, allow_unicode=True)
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name, allow_unicode=True)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
+
+class Board(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    video = EmbedVideoField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.title
