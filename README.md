@@ -29,6 +29,7 @@
 
 ---
 
+
 ## :dart: Trouble Shooting
 
 ---
@@ -41,6 +42,26 @@
 ---
 
 ## Code 및 시연 영상
+
+### 코드 목차 :bookmark_tabs:
+
+
+- [회원가입](##회원가입)
+
+
+- [로그인](##로그인)
+
+- [회원탈퇴](##회원탈퇴)
+
+- [접근제어](##접근제어)
+
+- [게시글](##CRUD)
+
+- [검색기능](##검색기능)
+
+- [조건제어](##조건제어)
+
+- [좋아요](##좋아요)
 
 ## User Model 정의
 
@@ -608,7 +629,7 @@ https://user-images.githubusercontent.com/117843786/221489056-1bd09b67-89dd-4d59
 
 ---
 
-## 검색 기능
+## 검색기능
 
 - search_results.html
 ```html
@@ -663,7 +684,7 @@ class SearchView(ListView):
 
 
 ---
-## 조건 제어
+## 조건제어
 - validators.py
 ```python
 import string
@@ -758,7 +779,7 @@ class ProcessLikeView(LoginAndVerificationRequiredMixin, View):
 ---
 
 
-# 팔로잉, 팔로워
+## 팔로잉, 팔로워
 - urls.py
 ```python
 path(
@@ -810,7 +831,7 @@ class FollowerListView(ListView):
 
 ![팔로워](https://user-images.githubusercontent.com/117843786/221473737-bb772fe9-4021-42ee-bb15-62a3b68a8d92.gif)
 
-# 주변 스크린 골프장 (연습장) 자동검색
+## 주변 스크린 골프장 (연습장) 자동검색
 ![image](https://user-images.githubusercontent.com/116260619/221486095-ae1544e2-8f34-42b3-a20b-122c8d0596f5.png)
 
 ![image](https://user-images.githubusercontent.com/116260619/221486153-36a35325-23fb-4425-9176-2989f52dbb99.png)
