@@ -209,6 +209,11 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 <img src="https://user-images.githubusercontent.com/117843786/221420154-c6697b01-d653-41b2-8eed-e86ac00d412c.png" width="35%" height="35%"/>
 </div>
 
+
+![회원가입](https://user-images.githubusercontent.com/117843786/221488933-4d096eb6-616b-4c9e-b5c2-a81162bf73cf.gif)
+<br/>
+<br/>
+
 ---
 
 ## 로그인
@@ -262,6 +267,11 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 <img src="https://user-images.githubusercontent.com/117843786/221420848-a80c9a13-3afc-40e8-a841-9d9c7aa02e4c.png" width="50%" height="50%"/>
 
+<br/>
+<br/>
+
+
+
 ---
 
 ## 회원탈퇴
@@ -302,6 +312,15 @@ class UserDeleteView(DeleteView):
 
 <img src="https://user-images.githubusercontent.com/117843786/221421198-9dee54f2-0605-429a-b59b-356ceeeb248d.png" width="70%" height="70%"/>
 - 정말 탈퇴할 것인지 물어본다
+
+<br/>
+<br/>
+<br/>
+
+https://user-images.githubusercontent.com/117843786/221489056-1bd09b67-89dd-4d59-a335-9794166d7912.mov
+
+<br/>
+<br/>
 
 ---
 
