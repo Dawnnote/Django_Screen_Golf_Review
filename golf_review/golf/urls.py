@@ -60,5 +60,9 @@ urlpatterns = [
     path("practice/", views.GotoPracticeGolf.as_view(), name="go-to-practicegolf"),
 
     path('post/', views.PostListView.as_view(), name='post_list'),
-    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail')
+    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
+
+    path('board/', views.BoardListView.as_view(), name='board_list'),
+    path('board/category/<str:category_slug>/', views.BoardListView.as_view(), name='board_list_by_category'),
+    path('board/<int:pk>/', views.BoardDetailView.as_view(), name='board_detail'),
 ]
