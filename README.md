@@ -311,3 +311,70 @@ class UserDeleteView(DeleteView):
 
 <img src="https://user-images.githubusercontent.com/117843786/221421198-9dee54f2-0605-429a-b59b-356ceeeb248d.png" width="70%" height="70%"/>
 - 정말 탈퇴할 것인지 물어본다
+
+---
+
+## 접근제어(권한)
+```python
+{% if user.is_authenticated and user == profile_user %}
+<div align="right" style="padding-right:200px">
+  <p  class="cp-chip intro" >
+    <a href="{% url 'user-delete' profile_user.id %}">
+      회원탈퇴
+    </a>
+  </p>
+</div>
+{% endif %}
+```
+- 로그인 한 유저와 자신의 프로필에서만 회원탈퇴를 보이기 하였다
+
+```python
+{% if user.is_authenticated %}
+	{{ form.content|attr:"placeholder:댓글 내용을 입력해주세요."|add_class:"cp-input" }}
+    <button class="cp-button small" type="submit">등록</button>
+{% else %}
+   <a href="{% url 'account_login' %}?next={% url 'review-detail' review.id %}">
+   {{ form.content|attr:"placeholder:댓글을 작성하려면 로그인이 필요합니다."|add_class:"cp-input"|attr:"disabled"}}
+</a>
+```
+- 로그인 유저만 댓글 작성이 가능하다
+- 비로그인 유저는 댓글 작성 폼을 클릭하면 로그인 창으로 이동한다
+
+```python
+{% if user.is_authenticated %}
+	<form action="{% url 'process-like' comment_ctype_id comment.id %}" method="post">{% csrf_token %}
+	<button class="like-button" type="submit">
+	{% if comment in liked_comments %}
+	<img width="21px" src="{% static 'golf/icons/ic-heart-orange.svg' %}" alt="filled like icon">
+	{% else %}
+	<img width="21px" src="{% static 'golf/icons/ic-heart.svg' %}" alt="like icon">
+	{% endif %}
+	<span> 좋아요 {{ comment.likes.count }}</span>
+	</button>
+	</form>
+{% else %}
+    <a class="like-button" href="{% url 'account_login' %}?next={% url 'review-detail' review.id %}" >
+    <img width="21px" src="{% static 'golf/icons/ic-heart.svg' %}" alt="like icon">
+    <span> 좋아요 {{ comment.likes.count }}</span>
+    </a>
+{% endif %}
+```
+- 로그인 유저만 게시글과 댓글 좋아요 버튼을 누룰 수 있다
+
+```python
+{% if user.is_authenticated and user != profile_user%}
+      <form class="follow-button" action="{% url 'process-follow' profile_user.id %}" method="post">
+        {% csrf_token %}
+        {% if is_following %}
+          <button class="cp-button small secondary" type="submit">
+            언팔로우
+          </button>
+        {% else %}
+          <button class="cp-button small" type="submit">
+            팔로우
+          </button>
+        {% endif %}
+```
+- 다른 유저를 팔로우 했다면 버튼이 언팔로우로 바뀐다
+
+
