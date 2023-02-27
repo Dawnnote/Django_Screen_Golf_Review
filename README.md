@@ -378,3 +378,7 @@ class UserDeleteView(DeleteView):
 - 다른 유저를 팔로우 했다면 버튼이 언팔로우로 바뀐다
 
 
+## 추가하고싶은기능
+- 스토어 nav 기능 구현 -> Item, Cart클래스 만들어서 manytomany로 유저마다 담은 카트가 다르게
+- 스크린골프 장소 map에서 현재 위치 기준으로 검색 할 수 있게끔
+
